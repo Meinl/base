@@ -11,7 +11,7 @@ import {
 
 const { width, height } = Dimensions.get('window');
 
-export default class Ordenes extends Component {
+export default class Nuevas extends Component {
 
   _handlePressIn = () => {
     Animated.spring(this.animatedValue, {
@@ -55,7 +55,7 @@ export default class Ordenes extends Component {
             right: 10,
           }}*/>
             <View style={styles.view}>
-              <Text style={styles.text}>{ new Date().getDate() } Jul</Text>
+              <Text style={styles.text}>{ new Date().getDate() }</Text>
             </View>
             <View style={styles.view}>
               <Text style={styles.text}>{ new Date().getDate() + 1 }</Text>
@@ -77,7 +77,19 @@ export default class Ordenes extends Component {
             onPressOut={this._handlePressOut} 
           >
             <Animated.View style={[styles.careers, animatedStyle]}>
-              <Text>Carrera 1</Text>
+              <View style={{padding:10, flexDirection:'row', flex:1}}>
+                <View style={{alignItems:'center'}}>
+                  <Text>Foto</Text>
+                </View>
+                <View>
+                  <Text>Dirección</Text>
+                  <Text>Hora</Text>
+                </View>
+              </View>
+              <View style={{flex:1, justifyContent:'flex-end', flexDirection:'row', padding:10}}>
+                <Text style={{alignSelf:'flex-end'}}>RECHAZAR</Text>
+                <Text style={{alignSelf:'flex-end'}}>ACEPTAR</Text>
+              </View>
             </Animated.View>
           </TouchableWithoutFeedback>
           <View style={styles.careers}>
@@ -116,18 +128,19 @@ const styles = StyleSheet.create({
   },
   text: {
     margin: 10,
-    fontSize: 22,
+    fontSize: 18,
+    color:'#3B3D3D'
     //fontWeight: 'bold',
   },
   view: {
     justifyContent: 'flex-start',
     alignItems: 'center',
     backgroundColor: 'white',
-    width: width / 4,
+    width: width / 4.5,
     margin: 10,
-    height: width / 4,
-    borderColor:'#CACACA',
-    borderWidth:1,
+    height: width / 5,
+    borderColor:'#ECECEC',
+    borderWidth:0.5,
     borderRadius: 1,
     shadowColor: "#000",
     shadowRadius: 5,

@@ -8,21 +8,51 @@ import {
   Switch,
   Dimensions
 } from 'react-native';
-import { createDrawerNavigator, createStackNavigator, DrawerItems, DrawerActions } from 'react-navigation'
+import { createDrawerNavigator, createStackNavigator, createMaterialTopTabNavigator, DrawerItems, DrawerActions } from 'react-navigation'
 import { Ionicons } from '@expo/vector-icons';
 import Turno from './Turno'
 
 const { height, width } = Dimensions.get('window');
 
 // StackNavigator
-import Ordenes from './Ordenes'
+import Nuevas from './Nuevas'
+import Aceptadas  from './Aceptadas'
 import Historial from './Historial'
 
+export const TabStack = createMaterialTopTabNavigator({
+  Nuevas: {
+    screen: Nuevas
+  },
+  Aceptadas: {
+    screen: Aceptadas
+  }
+},{
+  swipeEnabled: false,
+  tabBarOptions: {
+    activeTintColor:'#148B97',
+    inactiveTintColor: '#D4D5D5',
+    tabStyle: {
+      paddingTop:25,
+      width: 160,
+    },
+    style: {
+      backgroundColor: 'transparent',
+    },
+    labelStyle: {
+      fontSize: 20,
+      fontWeight:'bold'
+    },
+    indicatorStyle: {
+      opacity: 0
+    }
+  }
+})
+
 export const OrdenesStack = createStackNavigator({
-  Ordenes: { 
-    screen: Ordenes,
+  Home: { 
+    screen: TabStack,
     navigationOptions: ({ navigation }) => ({
-      headerTitle: 'Órdenes',
+      //headerTitle: 'Órdenes',
       headerLeft: 
       <TouchableOpacity
         onPress={() => navigation.dispatch(DrawerActions.toggleDrawer())}
@@ -30,9 +60,16 @@ export const OrdenesStack = createStackNavigator({
         <View style={{ padding: 10 }}>
           <Ionicons name= 'ios-menu-outline' size={30} color="#000" />
         </View>
-      </TouchableOpacity>
+      </TouchableOpacity>,
+      headerStyle:{
+        elevation:0
+      }
     })
   }
+},{
+  cardStyle:{
+    backgroundColor:'white'
+  },
 })
 
 export const HistorialStack = createStackNavigator({
@@ -68,6 +105,7 @@ export const Drawer = createDrawerNavigator({
     }),
   }
 }, {
+  drawerWidth: width,
   contentComponent: (props) =>
     <View style={{flex:1}}>
       <View style={{flex:1}}>
