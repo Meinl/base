@@ -33,7 +33,7 @@ export const TabStack = createMaterialTopTabNavigator({
     inactiveTintColor: '#D4D5D5',
     tabStyle: {
       paddingTop:25,
-      width: 160,
+      width: 155,
     },
     style: {
       backgroundColor: 'transparent',

@@ -3,7 +3,7 @@ import {
   View,
   Text,
   StyleSheet,
-  ScrollView, 
+  SectionList, 
   Dimensions,
   TouchableWithoutFeedback,
   Animated
@@ -11,7 +11,7 @@ import {
 
 const { width, height } = Dimensions.get('window');
 
-export default class Nuevas extends Component {
+export default class Aceptadas extends Component {
 
   _handlePressIn = () => {
     Animated.spring(this.animatedValue, {
@@ -39,39 +39,9 @@ export default class Nuevas extends Component {
     }
     return (
       <View style={styles.container}>
-        <View style={{marginBottom:10}}>
-          <ScrollView
-          ref={(scrollView) => { this.scrollView = scrollView }}
-          //pagingEnabled={true}
-          showsHorizontalScrollIndicator={false}
-          horizontal= {true}
-          decelerationRate={0}
-          snapToInterval={width - 60}
-          snapToAlignment={"center"}
-          /*contentInset={{
-            top: 0,
-            left: 10,
-            bottom: 0,
-            right: 10,
-          }}*/>
-            <View style={styles.view}>
-              <Text style={styles.text}>{ new Date().getDate() }</Text>
-            </View>
-            <View style={styles.view}>
-              <Text style={styles.text}>{ new Date().getDate() + 1 }</Text>
-            </View>
-            <View style={styles.view}>
-              <Text style={styles.text}>{ new Date().getDate() + 2 }</Text>
-            </View>
-            <View style={styles.view}>
-              <Text style={styles.text}>{ new Date().getDate() + 3 }</Text>
-            </View>
-            <View style={styles.view}>
-              <Text style={styles.text}>{ new Date().getDate() + 4 }</Text>
-            </View>
-          </ScrollView>
-        </View>
-        <ScrollView>
+        <SectionList
+          stickySectionHeadersEnabled={false}
+          renderItem={({item, index, section}) => 
           <TouchableWithoutFeedback
             onPressIn={this._handlePressIn}
             onPressOut={this._handlePressOut} 
@@ -91,23 +61,19 @@ export default class Nuevas extends Component {
                 <Text style={{alignSelf:'flex-end'}}>ACEPTAR</Text>
               </View>
             </Animated.View>
-          </TouchableWithoutFeedback>
-          <View style={styles.careers}>
-            <Text>Carrera 2</Text>
-          </View>
-          <View style={styles.careers}>
-            <Text>Carrera 3</Text>
-          </View>
-          <View style={styles.careers}>
-            <Text>Carrera 4</Text>
-          </View>
-          <View style={styles.careers}>
-            <Text>Carrera 5</Text>
-          </View>
-          <View style={styles.careers}>
-            <Text>Carrera 6</Text>
-          </View>
-        </ScrollView>
+          </TouchableWithoutFeedback>}
+          renderSectionHeader={({section: {title}}) => (
+            <View style={{justifyContent:'center', alignItems:'center', height:55, paddingBottom:10, paddingTop:20, backgroundColor:'white'}}>
+              <Text style={{color:'#148B97', fontWeight:'bold', fontSize:16}}>{title}</Text>
+            </View>
+          )}
+          sections={[
+            {title: '30, Jueves, Junio', data: ['item1', 'item2']},
+            {title: '01, Viernes, Julio', data: ['item3', 'item4']},
+            {title: '02, Sábado, Julio', data: ['item5', 'item6']},
+          ]}
+          keyExtractor={(item, index) => item + index}
+        />
       </View>
       )
   }
@@ -116,6 +82,7 @@ export default class Nuevas extends Component {
 const styles = StyleSheet.create({
   container: {
     marginTop:10,
+    flex:1
   },
   careers: {
     backgroundColor:'white',
@@ -128,25 +95,7 @@ const styles = StyleSheet.create({
   },
   text: {
     margin: 10,
-    fontSize: 18,
-    color:'#3B3D3D'
+    fontSize: 22,
     //fontWeight: 'bold',
-  },
-  view: {
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-    backgroundColor: 'white',
-    width: width / 4.5,
-    margin: 10,
-    height: width / 5,
-    borderColor:'#ECECEC',
-    borderWidth:0.5,
-    borderRadius: 1,
-    shadowColor: "#000",
-    shadowRadius: 5,
-    shadowOpacity: 0.3,
-    shadowOffset: { x: 2, y: 2 },
-    elevation:1,
-    //paddingHorizontal : 30
-  },
+  }
 })
