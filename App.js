@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text, TouchableOpacity, View, ActivityIndicator } from 'react-native';
-import { Drawer } from './src/navigators'
+import { SwitchStack } from './src/navigators'
 import { Font } from 'expo'
 
 export default class App extends React.Component {
@@ -19,7 +19,7 @@ export default class App extends React.Component {
 
   render(){
     return (
-      this.state.fontLoaded ? <Drawer /> : <View style={{flex:1, justifyContent:'center', alignItems:'center'}}><ActivityIndicator size="large" color="#148B97" /></View>
+      this.state.fontLoaded ? <SwitchStack /> : <View style={{flex:1, justifyContent:'center', alignItems:'center'}}><ActivityIndicator size="large" color="#148B97" /></View>
     )
   }
 }

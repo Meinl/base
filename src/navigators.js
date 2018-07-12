@@ -5,20 +5,25 @@ import {
   Button,
   View,
   TouchableOpacity,
+  AsyncStorage,
   ScrollView,
   Switch,
   Dimensions
 } from 'react-native';
-import { createDrawerNavigator, createStackNavigator, createMaterialTopTabNavigator, DrawerItems, DrawerActions } from 'react-navigation'
+import { createDrawerNavigator, createStackNavigator, createSwitchNavigator, createMaterialTopTabNavigator, DrawerItems, DrawerActions } from 'react-navigation'
 import { Ionicons } from '@expo/vector-icons';
 import Turno from './Turno'
 
 const { height, width } = Dimensions.get('window');
 
+import AuthLoadingScreen from './Auth'
+import Login from './Login'
+
 // StackNavigator
 import Nuevas from './Nuevas'
 import Aceptadas  from './Aceptadas'
 import Historial from './Historial'
+
 
 export const TabStack = createMaterialTopTabNavigator({
   Nuevas: {
@@ -102,6 +107,12 @@ export const HistorialStack = createStackNavigator({
   }
 })
 
+export const AuthStack = createStackNavigator({
+  Login:{
+    screen: Login
+  }
+})
+
 
 //DrawerNavigator
 export const Drawer = createDrawerNavigator({
@@ -158,14 +169,23 @@ export const Drawer = createDrawerNavigator({
             </View>
           )}
         />
-        <View style={{paddingTop:25, borderTopColor:'#CACACA', borderTopWidth:0.3}}>
+        <TouchableOpacity style={{paddingTop:25, borderTopColor:'#CACACA', borderTopWidth:0.3}}>
           <Text style={{color:'red'}}>Cerrar sesión</Text>
-        </View>
+        </TouchableOpacity>
       </View>
       <TouchableOpacity style={styles.callButton}>
         <Text style={{color:'white', fontSize:18}}>Llamar a Central</Text>
       </TouchableOpacity>
     </View>
+})
+
+export const SwitchStack = createSwitchNavigator({
+  AuthLoading: AuthLoadingScreen,
+  App: Drawer,
+  Auth: AuthStack,
+},
+{
+  initialRouteName: 'AuthLoading',
 })
 
 const styles = StyleSheet.create({
