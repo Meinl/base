@@ -119,7 +119,7 @@ export default class Login extends React.Component {
                 onChangeText={(mail) => this.setState({mail})}
               />
               <TouchableOpacity
-                onPress={this.setState({mail:''})}
+                onPress={this._togglePassword}
               >
                 <Ionicons 
                   style={styles.iconInput} 
@@ -137,15 +137,11 @@ export default class Login extends React.Component {
                 secureTextEntry={this.state.secureEntry}
                 onChangeText={(password) => this.setState({password})}
               />
-              <TouchableOpacity
-                onPress={this._togglePassword}
-              >
-                <Ionicons 
-                  style={styles.iconInput} 
-                  name='ios-eye' size={30} 
-                  color="#CACACA"
-                />
-              </TouchableOpacity>
+              <Ionicons 
+                style={styles.iconInput} 
+                name='ios-eye' size={30} 
+                color="#CACACA"
+              />
             </View>
           </View>
           <TouchableOpacity 
