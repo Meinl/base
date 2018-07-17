@@ -18,6 +18,7 @@ const { height, width } = Dimensions.get('window');
 
 import AuthLoadingScreen from './Auth'
 import Login from './Login'
+import Recovery from './Recovery'
 
 // StackNavigator
 import Nuevas from './Nuevas'
@@ -109,8 +110,18 @@ export const HistorialStack = createStackNavigator({
 
 export const AuthStack = createStackNavigator({
   Login:{
-    screen: Login
+    screen: Login,
+    navigationOptions: () => ({
+    })
+  },
+  Recovery:{
+    screen: Recovery
   }
+},{
+  headerMode:'none',
+  cardStyle:{
+    backgroundColor:'white'
+  },
 })
 
 
@@ -213,7 +224,7 @@ const styles = StyleSheet.create({
   callButton:{
     justifyContent:'center', 
     alignItems:'center', 
-    height:70, 
+    height:60, 
     marginHorizontal:20, 
     marginBottom:10, 
     backgroundColor:'#148B97',
