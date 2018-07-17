@@ -1,25 +1,57 @@
 import React from 'react';
-import { Text, TouchableOpacity, View, ActivityIndicator } from 'react-native';
-import { SwitchStack } from './src/navigators'
-import { Font } from 'expo'
+import { Text, TouchableOpacity, View, ActivityIndicator, StyleSheet } from 'react-native';
+import { SwitchStack } from './src/Menu/navigators'
+import { AppLoading, Asset, Font, Icon } from 'expo'
 
 export default class App extends React.Component {
   state = {
-    fontLoaded: false
+    isLoadingComplete: false,
   }
 
-  async componentDidMount() {
-    await Font.loadAsync({
-      'roboto': require('./assets/fonts/Roboto-Regular.ttf'),
-      'roboto-black': require('./assets/fonts/Roboto-Black.ttf'),
-      'roboto-bold': require('./assets/fonts/Roboto-Bold.ttf'),
-    });
-    this.setState({ fontLoaded: true });
+  render() {
+    if (!this.state.isLoadingComplete && !this.props.skipLoadingScreen) {
+      return (
+        <AppLoading
+          startAsync={this._loadResourcesAsync}
+          onError={this._handleLoadingError}
+          onFinish={this._handleFinishLoading}
+        />
+      )
+    } else {
+      return (
+        <SwitchStack />
+      );
+    }
   }
 
-  render(){
-    return (
-      this.state.fontLoaded ? <SwitchStack /> : <View style={{flex:1, justifyContent:'center', alignItems:'center'}}><ActivityIndicator size="large" color="#148B97" /></View>
-    )
-  }
+  _loadResourcesAsync = async () => {
+    return Promise.all([
+      Asset.loadAsync([
+        require('./assets/images/logo_moov_login.png'),
+        //require('./assets/images/logo_moov_login.png'), ***** PROD ******
+      ]),
+      Font.loadAsync({
+        // Imágenes e íconos
+        ...Icon.Ionicons.font,
+        'roboto': require('./assets/fonts/Roboto-Regular.ttf'),
+        'roboto-black': require('./assets/fonts/Roboto-Black.ttf'),
+        'roboto-bold': require('./assets/fonts/Roboto-Bold.ttf'),
+      }),
+    ]);
+  };
+
+  _handleLoadingError = error => {
+    console.warn(error);
+  };
+
+  _handleFinishLoading = () => {
+    this.setState({ isLoadingComplete: true });
+  };
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+  },
+})

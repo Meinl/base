@@ -6,7 +6,7 @@ import {
   SectionList, 
   Dimensions,  
 } from 'react-native'
-import OrderList from './OrderList';
+import OrderList from '../Nuevas/OrderList';
 
 export default class Aceptadas extends Component {
   

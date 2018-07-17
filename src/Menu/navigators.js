@@ -12,18 +12,18 @@ import {
 } from 'react-native';
 import { createDrawerNavigator, createStackNavigator, createSwitchNavigator, createMaterialTopTabNavigator, DrawerItems, DrawerActions } from 'react-navigation'
 import { Ionicons } from '@expo/vector-icons';
-import Turno from './Turno'
+import Turno from '../Turno/Turno'
 
 const { height, width } = Dimensions.get('window');
 
-import AuthLoadingScreen from './Auth'
-import Login from './Login'
-import Recovery from './Recovery'
+import AuthLoadingScreen from '../Auth/Auth'
+import Login from '../Auth/Login'
+import Recovery from '../Auth/Recovery'
 
 // StackNavigator
-import Nuevas from './Nuevas'
-import Aceptadas  from './Aceptadas'
-import Historial from './Historial'
+import Nuevas from '../Nuevas/Nuevas'
+import Aceptadas  from '../Aceptadas/Aceptadas'
+import Historial from '../Historial/Historial'
 
 
 export const TabStack = createMaterialTopTabNavigator({
