@@ -12,17 +12,20 @@ import {
   KeyboardAvoidingView,
   Keyboard
 } from 'react-native'
+import { connect } from 'react-redux'
+import { handleUser } from '../User/userActions'
+
 import { Ionicons } from '@expo/vector-icons'
 
 //Variable que obtiene las dimensiones de la pantalla del dispositivo
 const { width, height } = Dimensions.get('window')
 
-export default class Login extends React.Component {
+class Login extends React.Component {
   constructor() {
     super()
     this.state = {
       secureEntry: true,
-      mail:'',
+      username:'',
       password:''
     }
     this.animatedValue = new Animated.Value(0) //Se inicia el valor de la animación en 0
@@ -66,6 +69,13 @@ export default class Login extends React.Component {
     }).start()
   }
 
+  _login = (username, password) => {
+    this.props.dispatch(handleUser(username, password, () => {
+      this._signInAsync(username,password)
+      console.log(AsyncStorage.getItem('user'))
+    }))
+  }
+
   _togglePassword = () => {
     this.setState(prevState => ({
       secureEntry: !prevState.secureEntry
@@ -77,8 +87,8 @@ export default class Login extends React.Component {
     this.props.navigation.navigate('Recovery')
   }
   //Función que guardar el token de login de usuario en AsyncStorage
-  _signInAsync = async () => {
-    await AsyncStorage.setItem('userToken', 'abc')
+  _signInAsync = async (username, password) => {
+    await AsyncStorage.setItem('user', username)
     this.props.navigation.navigate('App')
   }
   
@@ -116,7 +126,11 @@ export default class Login extends React.Component {
                 style={styles.userInputs}
                 underlineColorAndroid='transparent'
                 placeholder="Mail usuario"
-                onChangeText={(mail) => this.setState({mail})}
+                autoCapitalize='none'
+                autoCorrect={false} 
+                autoFocus={true}
+                keyboardType='email-address'
+                onChangeText={(text) => this.setState({username: text})}
               />
               <TouchableOpacity
                 onPress={this._togglePassword}
@@ -134,8 +148,10 @@ export default class Login extends React.Component {
                 style={styles.userInputs}
                 underlineColorAndroid='transparent'
                 placeholder="Contraseña"
+                autoCapitalize='none'
+                autoCorrect={false} 
                 secureTextEntry={this.state.secureEntry}
-                onChangeText={(password) => this.setState({password})}
+                onChangeText={(text) => this.setState({password: text})}
               />
               <Ionicons 
                 style={styles.iconInput} 
@@ -145,7 +161,7 @@ export default class Login extends React.Component {
             </View>
           </View>
           <TouchableOpacity 
-            onPress={this._signInAsync}
+            onPress={() => this._login(this.state.username, this.state.password)}
             style={styles.submitButton}
           >
             <Text style={{color:'white', fontSize:18}}>Entrar</Text>
@@ -164,88 +180,96 @@ export default class Login extends React.Component {
   }
 }
 
-  const styles = StyleSheet.create({
-    container: {
-      flex:1,
-      justifyContent:'center',
-      alignItems:'center'
-    },
-    logo: {
-      fontSize: 72,
-      padding:0,
-      margin:0,
-      fontWeight:'bold'
-    },
-    logoContainer: {
-      flex:2, 
-      justifyContent:'center', 
-      alignItems:'center'
-    },
-    logoImage: {
-      alignItems:'flex-end', 
-      justifyContent:'flex-end'
-    },
-    logoText: {
-      width:width/2, 
-      textAlign:'center', 
-      paddingTop:20, 
-      fontSize:18, color:'gray'
-    },
-    loginContainer:{
-      flex:1, 
-      justifyContent:'flex-end', 
-      alignItems:'center'
-    },
-    errorMessage:{
-      paddingBottom:15
-    },
-    inputsContainer:{
-      width:width-60, 
-      height:100, 
-      elevation:3, 
-      backgroundColor:'white',
-      shadowColor:'black',
-      shadowOffset: {width:0, height:3},
-      shadowOpacity:0.1,
-      shadowRadius:2,
-    },
-    userInputsContainer:{
-      flexDirection:'row', 
-      justifyContent:'space-between', 
-      alignItems:'center', 
-      paddingHorizontal:10
-    },
-    userInputs:{
-      flex:1,
-      width:'auto', 
-      height:50
-    },
-    iconInput:{
-      width:30, 
-      textAlign:'center'
-    },
-    submitButton:{
-      width:width-60,
-      marginTop:30,
-      justifyContent:'center',
-      alignItems:'center',
-      backgroundColor:'#148B97',
-      height:60,
-      borderRadius:5,
-      elevation:2,
-      shadowColor:'black',
-      shadowOffset: {width:0, height:2},
-      shadowOpacity:0.1,
-      shadowRadius:2,
-    },
-    forgotPasswordContainer:{
-      justifyContent:'flex-end',
-      marginTop:50
-    },
-    forgotPasswordText:{
-      paddingBottom:20, 
-      width:width-60, 
-      justifyContent:'center', 
-      alignItems:'center'
-    }
-  })
+const styles = StyleSheet.create({
+  container: {
+    flex:1,
+    justifyContent:'center',
+    alignItems:'center'
+  },
+  logo: {
+    fontSize: 72,
+    padding:0,
+    margin:0,
+    fontWeight:'bold'
+  },
+  logoContainer: {
+    flex:2, 
+    justifyContent:'center', 
+    alignItems:'center'
+  },
+  logoImage: {
+    alignItems:'flex-end', 
+    justifyContent:'flex-end'
+  },
+  logoText: {
+    width:width/2, 
+    textAlign:'center', 
+    paddingTop:20, 
+    fontSize:18, color:'gray'
+  },
+  loginContainer:{
+    flex:1, 
+    justifyContent:'flex-end', 
+    alignItems:'center'
+  },
+  errorMessage:{
+    paddingBottom:15
+  },
+  inputsContainer:{
+    width:width-60, 
+    height:100, 
+    elevation:3, 
+    backgroundColor:'white',
+    shadowColor:'black',
+    shadowOffset: {width:0, height:3},
+    shadowOpacity:0.1,
+    shadowRadius:2,
+  },
+  userInputsContainer:{
+    flexDirection:'row', 
+    justifyContent:'space-between', 
+    alignItems:'center', 
+    paddingHorizontal:10
+  },
+  userInputs:{
+    flex:1,
+    width:'auto', 
+    height:50
+  },
+  iconInput:{
+    width:30, 
+    textAlign:'center'
+  },
+  submitButton:{
+    width:width-60,
+    marginTop:30,
+    justifyContent:'center',
+    alignItems:'center',
+    backgroundColor:'#148B97',
+    height:60,
+    borderRadius:5,
+    elevation:2,
+    shadowColor:'black',
+    shadowOffset: {width:0, height:2},
+    shadowOpacity:0.1,
+    shadowRadius:2,
+  },
+  forgotPasswordContainer:{
+    justifyContent:'flex-end',
+    marginTop:50
+  },
+  forgotPasswordText:{
+    paddingBottom:20, 
+    width:width-60, 
+    justifyContent:'center', 
+    alignItems:'center'
+  }
+})
+
+function mapStateToProps(state) {
+  return {
+    email: state.user.email
+  }
+}
+
+export default connect(mapStateToProps)(Login)
