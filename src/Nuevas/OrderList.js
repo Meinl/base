@@ -11,6 +11,7 @@ import {
 const { width, height } = Dimensions.get('window');
 
 export default class OrderList extends Component {
+
   render () {
     return (
         <SectionList

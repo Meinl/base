@@ -14,6 +14,7 @@ import {
 } from 'react-native'
 import { connect } from 'react-redux'
 import { handleUser } from '../User/userActions'
+import { handleNewOrdersList } from '../Nuevas/nuevasActions'
 
 import { Ionicons } from '@expo/vector-icons'
 
@@ -71,9 +72,9 @@ class Login extends React.Component {
 
   _login = (username, password) => {
     this.props.dispatch(handleUser(username, password, () => {
-      this._signInAsync(username,password)
-      console.log(AsyncStorage.getItem('user'))
+      this._signInAsync(username, password)
     }))
+    this.props.dispatch(handleNewOrdersList())
   }
 
   _togglePassword = () => {
@@ -86,9 +87,10 @@ class Login extends React.Component {
   _recoveryPass = () => {
     this.props.navigation.navigate('Recovery')
   }
+
   //Función que guardar el token de login de usuario en AsyncStorage
   _signInAsync = async (username, password) => {
-    await AsyncStorage.setItem('user', username)
+    await AsyncStorage.multiSet([['username', username], ['password', password]])
     this.props.navigation.navigate('App')
   }
   
@@ -123,12 +125,12 @@ class Login extends React.Component {
           <View style={styles.inputsContainer}>
             <View style={styles.userInputsContainer}>
               <TextInput
+                ref={ input => { this.email = input }}
                 style={styles.userInputs}
                 underlineColorAndroid='transparent'
                 placeholder="Mail usuario"
                 autoCapitalize='none'
                 autoCorrect={false} 
-                autoFocus={true}
                 keyboardType='email-address'
                 onChangeText={(text) => this.setState({username: text})}
               />
