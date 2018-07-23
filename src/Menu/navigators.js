@@ -11,8 +11,8 @@ import {
   Dimensions
 } from 'react-native';
 import { createDrawerNavigator, createStackNavigator, createSwitchNavigator, createMaterialTopTabNavigator, DrawerItems, DrawerActions } from 'react-navigation'
-import { Ionicons } from '@expo/vector-icons';
-import Turno from '../Turno/Turno'
+import { Ionicons } from '@expo/vector-icons'
+import Header from './Header'
 
 const { height, width } = Dimensions.get('window');
 
@@ -144,33 +144,7 @@ export const Drawer = createDrawerNavigator({
   contentComponent: (props) =>
     <View style={{flex:1}}>
       <View style={{flex:1, padding:20}}>
-        <View style={{justifyContent:'center', alignItems:'flex-start', height:height/3}}>
-          <View style={{flexDirection:'row', justifyContent:'space-between' , flex:1, alignItems:'flex-end'}}>
-            <Text style={styles.iniciales}>DC</Text>
-            <TouchableOpacity style={{alignSelf:'flex-start', paddingTop:10}}
-              onPress={() => props.navigation.dispatch(DrawerActions.toggleDrawer())}
-            >
-              <Ionicons name= 'ios-close' size={50} color="#000" />
-            </TouchableOpacity>
-          </View>
-          <Text style={styles.nameMail}>Diego Carneiro</Text>
-          <Text style={styles.nameMail}>dc@beenary.cl</Text>
-          <Text style={styles.idSmall}>ID Conductor</Text>
-          <Text style={{fontFamily:'roboto', fontSize:16, paddingBottom:10}}>711</Text>
-        </View>
-        <View style={{
-          height:height/10, 
-          flexDirection:'row', 
-          justifyContent:'space-between', 
-          alignItems:'center', 
-          borderBottomColor:'#CACACA',
-          borderBottomWidth:0.3,
-          borderTopColor:'#CACACA', 
-          borderTopWidth:0.3
-          }}>
-          <Text>En Servicio</Text>
-          <Turno/>
-        </View>
+        <Header {...props}/>
         <DrawerItems {...props}
           activeBackgroundColor='transparent'
           getLabel = {(route) => (

@@ -1,4 +1,4 @@
-import { GET_USER } from './userActions'
+import { GET_USER, LOADING } from './userActions'
 
 export default function user(state = {}, action) {
   switch(action.type) {
@@ -7,6 +7,12 @@ export default function user(state = {}, action) {
         ...state,
         ...action.user
       }
+    case LOADING : {
+      return {
+        ...state,
+        isLoading: action.isLoading
+      }  
+    }
     default : 
       return state
   }

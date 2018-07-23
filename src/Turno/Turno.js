@@ -1,25 +1,37 @@
 import React from 'react';
 import { Text, View, Switch, Alert } from 'react-native';
+import { connect } from 'react-redux'
+import { handleTurn } from './turnoActions'
 
-export default class Turno extends React.Component {
-  state = {
-    switchValue: false
+class Turno extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      switchValue: props.turn
+    }
   }
 
-  _handleToggleSwitch = () => {
-    this.setState(state => ({
-      switchValue: !state.switchValue,
-    }))
-    Alert.alert('Turno',`Su turno ha sido ${!this.state.switchValue ? 'encendido' : 'apagado'}`)
-  }
-  
+  _handleToggleTurn = () => {
+    if (this.state.switchValue === 1) {
+      this.props.dispatch(handleTurn(0, () => {
+        Alert.alert('Turno',`Su turno ha sido ${!this.state.switchValue ? 'encendido' : 'apagado'}`)
+      }))
+    }
+    else {
+      this.props.dispatch(handleTurn(1, () => {
+        Alert.alert('Turno',`Su turno ha sido ${!this.state.switchValue ? 'encendido' : 'apagado'}`)
+      }))
+    }
+  }  
 
   render(){
     return(
       <Switch
-        onValueChange={this._handleToggleSwitch}
+        onValueChange={this._handleToggleTurn}
         value={this.state.switchValue}
       />
     )
   }
 }
+
+export default connect()(Turno)

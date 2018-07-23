@@ -10,7 +10,8 @@ import {
   Dimensions,
   TouchableOpacity,
   KeyboardAvoidingView,
-  Keyboard
+  Keyboard,
+  ActivityIndicator
 } from 'react-native'
 import { connect } from 'react-redux'
 import { handleUser } from '../User/userActions'
@@ -26,8 +27,8 @@ class Login extends React.Component {
     super()
     this.state = {
       secureEntry: true,
-      username:'',
-      password:''
+      username:'dc@beenary.cl',
+      password:'123456'
     }
     this.animatedValue = new Animated.Value(0) //Se inicia el valor de la animación en 0
     this.toScale = new Animated.Value(1)
@@ -74,13 +75,19 @@ class Login extends React.Component {
     this.props.dispatch(handleUser(username, password, () => {
       this._signInAsync(username, password)
     }))
-    this.props.dispatch(handleNewOrdersList())
+    //this.props.dispatch(handleNewOrdersList())
   }
 
   _togglePassword = () => {
     this.setState(prevState => ({
       secureEntry: !prevState.secureEntry
     }))
+  }
+
+  _clearInput = () => {
+    this.setState({
+      username:''
+    })
   }
 
   //Función de navegación a la pantalla de recuperar contraseña
@@ -111,7 +118,7 @@ class Login extends React.Component {
           <View>
             <View style={styles.logoImage}>
               <Animated.Image
-                style={{transform:[{scale:this.toScale}]}} 
+                style={{transform:[{translateY:move}]}} 
                 source={require('../../assets/images/logo_moov_login.png')} 
               />
             </View>
@@ -121,12 +128,12 @@ class Login extends React.Component {
           </Animated.View>
         </View>
         <View style={styles.loginContainer}>
-          <Text style={styles.errorMessage}>{/**mensaje de error de login**/}</Text>
           <View style={styles.inputsContainer}>
             <View style={styles.userInputsContainer}>
               <TextInput
                 ref={ input => { this.email = input }}
                 style={styles.userInputs}
+                value={this.state.username}
                 underlineColorAndroid='transparent'
                 placeholder="Mail usuario"
                 autoCapitalize='none'
@@ -135,7 +142,7 @@ class Login extends React.Component {
                 onChangeText={(text) => this.setState({username: text})}
               />
               <TouchableOpacity
-                onPress={this._togglePassword}
+                onPress={this._clearInput}
               >
                 <Ionicons 
                   style={styles.iconInput} 
@@ -148,6 +155,7 @@ class Login extends React.Component {
             <View style={[styles.userInputsContainer, {borderTopWidth:1, borderTopColor:'#ECECEC'}]}>
               <TextInput
                 style={styles.userInputs}
+                value={this.state.password}
                 underlineColorAndroid='transparent'
                 placeholder="Contraseña"
                 autoCapitalize='none'
@@ -155,18 +163,26 @@ class Login extends React.Component {
                 secureTextEntry={this.state.secureEntry}
                 onChangeText={(text) => this.setState({password: text})}
               />
-              <Ionicons 
-                style={styles.iconInput} 
-                name='ios-eye' size={30} 
-                color="#CACACA"
-              />
+              <TouchableOpacity
+                onPress={this._togglePassword}
+              >
+                <Ionicons 
+                  style={styles.iconInput} 
+                  name='ios-eye' size={30} 
+                  color="#CACACA"
+                />
+              </TouchableOpacity>
             </View>
           </View>
           <TouchableOpacity 
+            disabled={this.state.username === '' || this.state.password === ''}
             onPress={() => this._login(this.state.username, this.state.password)}
             style={styles.submitButton}
           >
-            <Text style={{color:'white', fontSize:18}}>Entrar</Text>
+            <Text style={{
+              color: 'white',
+              opacity: (this.state.username === '' || this.state.password === '') ? .5 : 1,
+              fontSize:18}}>{this.props.isLoading ? <ActivityIndicator color='#FFF' /> : 'Entrar'}</Text>
           </TouchableOpacity>
         </View>
         <View style={styles.forgotPasswordContainer}>
@@ -270,7 +286,8 @@ const styles = StyleSheet.create({
 
 function mapStateToProps(state) {
   return {
-    email: state.user.email
+    email: state.user.email,
+    isLoading: state.user.isLoading
   }
 }
 
