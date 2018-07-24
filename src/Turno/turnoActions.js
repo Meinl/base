@@ -3,9 +3,9 @@ import { _throwAlert } from '../utils/helpers'
 
 export const TOGGLE_TURN = 'TOGGLE_TURN'
 
-export function handleTurn(value, cb) {
+export function handleTurn(username, password, value, cb) {
   return (dispatch) => {
-    toggleTurn(value)
+    toggleTurn(username, password, value)
     .then(({status, data}) => {
       dispatch(chageTurn(data.turn))
       cb()

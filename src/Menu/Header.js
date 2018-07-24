@@ -45,7 +45,7 @@ class Header extends React.Component {
           borderTopWidth:0.3
           }}>
           <Text>En Servicio</Text>
-          <Turno turn={user.turn}/>
+          <Turno/>
         </View>
       </View>
     )

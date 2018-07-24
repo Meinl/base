@@ -75,7 +75,6 @@ class Login extends React.Component {
     this.props.dispatch(handleUser(username, password, () => {
       this._signInAsync(username, password)
     }))
-    //this.props.dispatch(handleNewOrdersList())
   }
 
   _togglePassword = () => {
@@ -182,7 +181,7 @@ class Login extends React.Component {
             <Text style={{
               color: 'white',
               opacity: (this.state.username === '' || this.state.password === '') ? .5 : 1,
-              fontSize:18}}>{this.props.isLoading ? <ActivityIndicator color='#FFF' /> : 'Entrar'}</Text>
+              fontSize:18}}>'Entrar'</Text>
           </TouchableOpacity>
         </View>
         <View style={styles.forgotPasswordContainer}>
