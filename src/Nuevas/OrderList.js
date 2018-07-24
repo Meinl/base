@@ -12,6 +12,10 @@ const { width, height } = Dimensions.get('window');
 
 export default class OrderList extends Component {
 
+  componentDidMount() {
+
+  }
+
   render () {
     return (
         <SectionList

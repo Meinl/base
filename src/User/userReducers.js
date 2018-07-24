@@ -1,17 +1,18 @@
-import { GET_USER, LOADING } from './userActions'
+import { LOADING, CHANGE_TURN } from './userActions'
+import { RECEIVE_DATA } from '../actions/shared';
 
 export default function user(state = {}, action) {
   switch(action.type) {
-    case GET_USER : 
+    case RECEIVE_DATA : 
       return {
         ...state,
         ...action.user
       }
-    case LOADING : {
+    case CHANGE_TURN : {
       return {
         ...state,
-        isLoading: action.isLoading
-      }  
+        turn: action.turn
+      }
     }
     default : 
       return state

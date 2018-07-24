@@ -1,22 +1,33 @@
-import React from 'react';
+import React from 'react'
 import {
   ActivityIndicator,
   AsyncStorage,
   StatusBar,
   StyleSheet,
   View,
-} from 'react-native';
+} from 'react-native'
+import { connect } from 'react-redux'
+import { handleInitialData } from '../actions/shared'
 
-export default class AuthLoadingScreen extends React.Component {
+class AuthLoadingScreen extends React.Component {
   constructor() {
-    super();
-    this._bootstrapAsync();
+    super()
+    this._bootstrapAsync()
   }
 
   _bootstrapAsync = async () => {
-    const userLogin = await AsyncStorage.multiGet(['username', 'password'])
-    this.props.navigation.navigate((userLogin[0][1] && userLogin[1][1]) ? 'App' : 'Auth')
-  };
+    await AsyncStorage.multiGet(['username', 'password'])
+    .then(userLogin => {
+      if(userLogin[0][1] && userLogin[1][1]) {
+        this.props.dispatch(handleInitialData(userLogin[0][1], userLogin[1][1], () => {
+          this.props.navigation.navigate('App')
+        }))
+      }
+      else {
+        this.props.navigation.navigate('Auth')
+      }
+    })
+  }
 
   render() {
     return (
@@ -35,3 +46,5 @@ const styles = StyleSheet.create({
       alignItems:'center'
     }
   })
+
+  export default connect()(AuthLoadingScreen)

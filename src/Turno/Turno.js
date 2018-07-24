@@ -4,20 +4,15 @@ import { connect } from 'react-redux'
 import { handleTurn } from './turnoActions'
 
 class Turno extends React.Component {
-   
+    
   _handleToggleTurn = async () => {
     await AsyncStorage.multiGet(['username', 'password'])
     .then(userData => {
-      console.log(userData)
       if (this.props.turn === true) {
-        this.props.dispatch(handleTurn(userData[0][1], userData[1][1], false, () => {
-          Alert.alert('Turno',`Su turno ha sido ${!this.props.turn ? 'encendido' : 'apagado'}`)
-        }))
+        this.props.dispatch(handleTurn(userData[0][1], userData[1][1], false))
       }
-      else {
-        this.props.dispatch(handleTurn(userData[0][1], userData[1][1], true, () => {
-          Alert.alert('Turno',`Su turno ha sido ${!this.props.turn ? 'encendido' : 'apagado'}`)
-        }))
+      else if(this.props.turn === false) {
+        this.props.dispatch(handleTurn(userData[0][1], userData[1][1], true))
       }
     })
   }

@@ -14,8 +14,7 @@ import {
   ActivityIndicator
 } from 'react-native'
 import { connect } from 'react-redux'
-import { handleUser } from '../User/userActions'
-import { handleNewOrdersList } from '../Nuevas/nuevasActions'
+import { handleInitialData } from '../actions/shared'
 
 import { Ionicons } from '@expo/vector-icons'
 
@@ -72,7 +71,7 @@ class Login extends React.Component {
   }
 
   _login = (username, password) => {
-    this.props.dispatch(handleUser(username, password, () => {
+    this.props.dispatch(handleInitialData(username, password, () => {
       this._signInAsync(username, password)
     }))
   }
@@ -178,10 +177,14 @@ class Login extends React.Component {
             onPress={() => this._login(this.state.username, this.state.password)}
             style={styles.submitButton}
           >
-            <Text style={{
-              color: 'white',
-              opacity: (this.state.username === '' || this.state.password === '') ? .5 : 1,
-              fontSize:18}}>'Entrar'</Text>
+            {
+              this.props.isLoading 
+              ? <ActivityIndicator color='#FFF'/> 
+              : <Text style={{
+                color: 'white',
+                opacity: (this.state.username === '' || this.state.password === '') ? .5 : 1,
+                fontSize:18}}>Entrar</Text>
+            }
           </TouchableOpacity>
         </View>
         <View style={styles.forgotPasswordContainer}>
@@ -286,7 +289,7 @@ const styles = StyleSheet.create({
 function mapStateToProps(state) {
   return {
     email: state.user.email,
-    isLoading: state.user.isLoading
+    isLoading: state.loading
   }
 }
 

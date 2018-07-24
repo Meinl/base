@@ -13,6 +13,7 @@ import {
 import { createDrawerNavigator, createStackNavigator, createSwitchNavigator, createMaterialTopTabNavigator, DrawerItems, DrawerActions } from 'react-navigation'
 import { Ionicons } from '@expo/vector-icons'
 import Header from './Header'
+import Logout from '../Auth/Logout'
 
 const { height, width } = Dimensions.get('window');
 
@@ -154,9 +155,7 @@ export const Drawer = createDrawerNavigator({
             </View>
           )}
         />
-        <TouchableOpacity style={{paddingTop:25, borderTopColor:'#CACACA', borderTopWidth:0.3}}>
-          <Text style={{color:'red'}}>Cerrar sesión</Text>
-        </TouchableOpacity>
+        <Logout navigation={props.navigation}/>
       </View>
       <TouchableOpacity style={styles.callButton}>
         <Text style={{color:'white', fontSize:18}}>Llamar a Central</Text>

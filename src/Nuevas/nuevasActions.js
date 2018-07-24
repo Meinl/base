@@ -1,8 +1,7 @@
 import { database } from '../utils/firebase'
+import { RECEIVE_DATA } from '../actions/shared';
 
-export const GET_NEW_ORDERS = 'GET_NEW_ORDERS'
-
-export function handleNewOrdersList() {
+export function fetchNewOrdersList() {
   return(dispatch) => {
     const newOrders = database.ref('orders')
     newOrders.on('value', (snapshot) => {
@@ -11,9 +10,9 @@ export function handleNewOrdersList() {
   }
 }
 
-export function receiveNewOrdersList(newOrders) {
+function receiveNewOrdersList(newOrders) {
   return {
-    type: GET_NEW_ORDERS,
+    type: RECEIVE_DATA,
     newOrders
   }
 }

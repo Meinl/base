@@ -1,8 +1,8 @@
-import { GET_NEW_ORDERS } from './nuevasActions'
+import { RECEIVE_DATA } from '../actions/shared';
 
 export default function newOrders(state = {}, action) {
     switch(action.type) {
-      case GET_NEW_ORDERS : 
+      case RECEIVE_DATA : 
         return {
           ...state,
           ...action.newOrders

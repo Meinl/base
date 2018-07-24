@@ -1,24 +1,18 @@
 import { toggleTurn } from "../utils/api";
 import { _throwAlert } from '../utils/helpers'
+import { changeTurn } from '../User/userActions'
 
 export const TOGGLE_TURN = 'TOGGLE_TURN'
 
-export function handleTurn(username, password, value, cb) {
+export function handleTurn(username, password, turn) {
   return (dispatch) => {
-    toggleTurn(username, password, value)
+    dispatch(changeTurn(turn))
+    toggleTurn(username, password, turn)
     .then(({status, data}) => {
-      dispatch(chageTurn(data.turn))
-      cb()
     })
     .catch(() => {
-      _throwAlert('Usuario o contraseña incorrectas', 'El usuario o contraseña que ingresaste son incorrectos. Vuelve a intentarlo.', 'Aceptar')
+      dispatch(changeTurn(!turn))
+      _throwAlert('Ha ocurrido un error', 'Favor vuelve a intentarlo.', 'Aceptar')
     })
-  }
-}
-
-export function chageTurn(value) {
-  return {
-    type:'TOGGLE_TURN',
-    turn: value
   }
 }

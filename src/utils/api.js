@@ -3,10 +3,10 @@ import { _throwError } from './helpers'
 
 const API_PATH = 'http://moov.beenary.cl/driver'
 const HEADERS = new Headers()
+HEADERS.append('Content-Type', 'application/json')
 
-export function getUser(username, password) {
+export function fetchUser(username, password) {
   HEADERS.append('Authorization', 'Basic ' + base64.encode(`${username}:${password}`))
-  HEADERS.append('Content-Type', 'application/json')
   return (
       fetch(`${API_PATH}/auth/login`, {
         method: 'GET',
@@ -22,7 +22,6 @@ export function getUser(username, password) {
 
 export function toggleTurn(username, password, turn) {
   HEADERS.append('Authorization', 'Basic ' + base64.encode(`${username}:${password}`))
-  HEADERS.append('Content-Type', 'application/json')
   if (turn === false) {
     return (
       fetch(`${API_PATH}/turn/off`, {
