@@ -18,7 +18,7 @@ class Nuevas extends Component {
   render () {
     return (
       <View style={styles.container}>
-        <Text>{JSON.stringify(this.props.newOrders)}</Text>
+        <OrderList {...this.props.newOrders}/>
       </View>
       )
   }
