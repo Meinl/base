@@ -1,5 +1,6 @@
 import base64 from 'base-64'
 import { _throwError } from './helpers'
+import { database } from '../utils/firebase'
 
 const API_PATH = 'http://moov.beenary.cl/driver'
 const HEADERS = new Headers()
@@ -17,6 +18,16 @@ export function fetchUser(username, password) {
         return data
       })
       .catch(err => console.log('err:', err))
+  )
+}
+
+export function fetchNewOrdersList() {
+  const newOrders = database.ref('orders')
+  return (
+    newOrders.once('value')
+    .then(snapshot => {
+      return snapshot.val()
+    })
   )
 }
 

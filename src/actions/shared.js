@@ -1,12 +1,12 @@
-import { fetchUser } from '../utils/api'
-import { fetchNewOrdersList } from '../Nuevas/nuevasActions'
+import { fetchUser, fetchNewOrdersList } from '../utils/api'
  
 export const RECEIVE_DATA = 'RECEIVE_DATA'
 
-function receiveData(user) {
+function receiveData(user, newOrders) {
   return {
     type:'RECEIVE_DATA',
-    user
+    user,
+    newOrders
   }
 }
 
@@ -14,9 +14,10 @@ export function handleInitialData (username, password, cb) {
   return (dispatch) => {
     Promise.all([
       fetchUser(username, password),
-    ]).then(([data]) => {
-      dispatch(receiveData(data.data))
-      cb()
-    }).then(()=> dispatch(fetchNewOrdersList()))
+      fetchNewOrdersList(),
+    ]).then(([user, orders]) => {
+        dispatch(receiveData(user.data, orders))
+        cb()
+    })
   }
 }

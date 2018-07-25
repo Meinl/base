@@ -7,16 +7,18 @@ import {
   Dimensions,
   TouchableOpacity
 } from 'react-native'
+import { connect } from 'react-redux'
+import { handleAddedOrder } from './nuevasActions'
 
-const { width, height } = Dimensions.get('window');
+const { width, height } = Dimensions.get('window')
 
-export default class OrderList extends Component {
+class OrderList extends Component {
 
   componentDidMount() {
-
+    this.props.dispatch(handleAddedOrder())
   }
 
-  render () {
+   render () {
     return (
         <SectionList
           stickySectionHeadersEnabled={true}
@@ -28,8 +30,8 @@ export default class OrderList extends Component {
                   <View style={{backgroundColor:'transparent', height:16, width:16, borderRadius:8, borderWidth:1,borderColor:'#148B97', alignSelf:'center', position:'absolute'}}></View>
                 </View>
                 <View style={{paddingLeft:15}}>
-                  <Text style={{fontSize:18, fontFamily:'roboto'}}>Av. Las Condes 7700, Las Condes</Text>
-                  <Text style={{fontSize:18, fontWeight:'bold', fontFamily:'roboto'}}>22:00 hrs</Text>
+                  <Text style={{fontSize:18, fontFamily:'roboto'}}>{item.info.origin.name}</Text>
+                  <Text style={{fontSize:18, fontWeight:'bold', fontFamily:'roboto'}}>{item.info.datetime.time} hrs</Text>
                 </View>
               </View>
               <View style={{flex:1, justifyContent:'flex-end', flexDirection:'row', padding:10}}>
@@ -47,9 +49,7 @@ export default class OrderList extends Component {
             </View>
           )}
           sections={[
-            {title: '30, Jueves, Junio', data: ['item1', 'item2']},
-            {title: '01, Viernes, Julio', data: ['item3', 'item4']},
-            {title: '02, Sábado, Julio', data: ['item5', 'item6']},
+            {title: '30, Jueves, Junio', data: this.props.newOrders}
           ]}
           keyExtractor={(item, index) => item + index}
         />
@@ -77,3 +77,11 @@ const styles = StyleSheet.create({
     fontSize: 22,
   }
 })
+
+function mapStateToProps(state) {
+  return {
+    newOrders: Object.keys(state.newOrders).map((item) => state.newOrders[item])
+  }
+}
+
+export default connect(mapStateToProps)(OrderList)

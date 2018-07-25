@@ -9,18 +9,13 @@ import {
 import OrderList from './OrderList'
 import { connect } from 'react-redux'
 
-class Nuevas extends Component {
-
-  componentDidMount() {
-    console.log(this.props.newOrders,':::::::::::::::::::::::::::::::::::::')
-  }
-
+class Nuevas extends Component {  
   render () {
     return (
       <View style={styles.container}>
-        <OrderList {...this.props.newOrders}/>
+        <OrderList/>
       </View>
-      )
+    )
   }
 }
 

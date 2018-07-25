@@ -1,18 +1,19 @@
 import { database } from '../utils/firebase'
-import { RECEIVE_DATA } from '../actions/shared';
+ 
+export const ADD_ORDER = 'ADD_ORDER'
 
-export function fetchNewOrdersList() {
+export function handleAddedOrder() {
   return(dispatch) => {
-    const newOrders = database.ref('orders')
-    newOrders.on('value', (snapshot) => {
-      dispatch(receiveNewOrdersList(snapshot.val()))
+    const addOrder = database.ref('orders')
+    addOrder.on('child_added', snapshot => {
+      dispatch(orderAdded(snapshot.val()))
     })
   }
 }
 
-function receiveNewOrdersList(newOrders) {
+function orderAdded(order) {
   return {
-    type: RECEIVE_DATA,
-    newOrders
+    type: ADD_ORDER,
+    order
   }
 }
