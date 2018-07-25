@@ -1,20 +1,18 @@
 import React from 'react';
-import { Text, View, Switch, Alert, AsyncStorage } from 'react-native';
+import { Text, View, Switch, Alert } from 'react-native';
 import { connect } from 'react-redux'
 import { handleTurn } from './turnoActions'
 
 class Turno extends React.Component {
     
-  _handleToggleTurn = async () => {
-    await AsyncStorage.multiGet(['username', 'password'])
-    .then(userData => {
-      if (this.props.turn === true) {
-        this.props.dispatch(handleTurn(userData[0][1], userData[1][1], false))
-      }
-      else if(this.props.turn === false) {
-        this.props.dispatch(handleTurn(userData[0][1], userData[1][1], true))
-      }
-    })
+  _handleToggleTurn = () => {
+    const { username, password } = this.props.credentials
+    if (this.props.turn === true) {
+      this.props.dispatch(handleTurn(username, password, false))
+    }
+    else if(this.props.turn === false) {
+      this.props.dispatch(handleTurn(username, password, true))
+    }
   }
 
   render(){
@@ -29,7 +27,8 @@ class Turno extends React.Component {
 
 function mapStateToProps(state) {
   return {
-    turn: state.user.turn
+    turn: state.user.turn,
+    credentials: state.user.credentials
   }
 }
 

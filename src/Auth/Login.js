@@ -70,12 +70,6 @@ class Login extends React.Component {
     }).start()
   }
 
-  _login = (username, password) => {
-    this.props.dispatch(handleInitialData(username, password, () => {
-      this._signInAsync(username, password)
-    }))
-  }
-
   _togglePassword = () => {
     this.setState(prevState => ({
       secureEntry: !prevState.secureEntry
@@ -95,8 +89,13 @@ class Login extends React.Component {
 
   //Función que guardar el token de login de usuario en AsyncStorage
   _signInAsync = async (username, password) => {
-    await AsyncStorage.multiSet([['username', username], ['password', password]])
-    this.props.navigation.navigate('App')
+    try {
+      AsyncStorage.multiSet([['username', username], ['password', password]])
+      this.props.navigation.navigate('AuthLoading')
+    }
+    catch(err) {
+      console.log(err)
+    }
   }
   
   render() {
@@ -174,17 +173,14 @@ class Login extends React.Component {
           </View>
           <TouchableOpacity 
             disabled={this.state.username === '' || this.state.password === ''}
-            onPress={() => this._login(this.state.username, this.state.password)}
+            onPress={() => this._signInAsync(this.state.username, this.state.password)}
             style={styles.submitButton}
           >
-            {
-              this.props.isLoading 
-              ? <ActivityIndicator color='#FFF'/> 
-              : <Text style={{
-                color: 'white',
-                opacity: (this.state.username === '' || this.state.password === '') ? .5 : 1,
-                fontSize:18}}>Entrar</Text>
-            }
+          <Text style={{
+            color: 'white',
+            opacity: (this.state.username === '' || this.state.password === '') ? .5 : 1,
+            fontSize:18}}>Entrar
+          </Text>
           </TouchableOpacity>
         </View>
         <View style={styles.forgotPasswordContainer}>

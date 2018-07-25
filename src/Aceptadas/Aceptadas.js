@@ -13,7 +13,7 @@ export default class Aceptadas extends Component {
   render () {
     return (
       <View style={styles.container}>
-        <OrderList/>
+        <Text>Aceptadas</Text>
       </View>
       )
   }
