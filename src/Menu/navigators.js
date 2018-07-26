@@ -14,6 +14,7 @@ import { createDrawerNavigator, createStackNavigator, createSwitchNavigator, cre
 import { Ionicons } from '@expo/vector-icons'
 import Header from './Header'
 import Logout from '../Auth/Logout'
+import BadgeIcon from './BadgeIcon'
 
 const { height, width } = Dimensions.get('window');
 
@@ -29,14 +30,18 @@ import Historial from '../Historial/Historial'
 
 export const TabStack = createMaterialTopTabNavigator({
   Nuevas: {
-    screen: Nuevas
+    screen: Nuevas,
+    navigationOptions: () => ({
+      tabBarIcon: <BadgeIcon/>
+    })
   },
   Aceptadas: {
     screen: Aceptadas
   }
 },{
-  swipeEnabled: false,
+  swipeEnabled: true,
   tabBarOptions: {
+    showIcon:true,
     activeTintColor:'#148B97',
     upperCaseLabel: false,
     inactiveTintColor: '#D4D5D5',
@@ -44,9 +49,15 @@ export const TabStack = createMaterialTopTabNavigator({
       paddingTop:25,
       paddingLeft:20,
       width: 'auto',
+      flexDirection:'row',
+    },
+    iconStyle: {
+      position:'absolute',
+      zIndex:1,
+      right:5
     },
     style: {
-      backgroundColor: 'transparent',
+      backgroundColor: 'transparent'
     },
     labelStyle: {
       fontSize: 22,
