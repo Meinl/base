@@ -14,7 +14,6 @@ class BadgeIcon extends React.Component {
 
   componentDidMount() {
     this._NotifiAnimation()
-    if(this.props.turn) console.log('existe')
   }
 
   _NotifiAnimation = () => {

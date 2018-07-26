@@ -19,10 +19,10 @@ export function fetchUser(username, password) {
   )
 }
 
-export function fetchNewOrdersList() {
-  const newOrders = database.ref('orders')
+export function fetchOrdersList(driverID) {
+  const orders = database.ref('orders').orderByChild('/assignment/driver_id').equalTo(driverID)
   return (
-    newOrders.once('value')
+    orders.once('value')
     .then(snapshot => {
       return snapshot.val()
     })

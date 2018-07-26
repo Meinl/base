@@ -90,13 +90,13 @@ class Login extends React.Component {
   //Función que guardar el token de login de usuario en AsyncStorage
   _login = (username, password) => {
     fetchUser(username, password)
-      .then(() => this._signInAsync(username, password))
+      .then((data) => this._signInAsync(username, password, data.data.id))
       .catch(() => _throwAlert('Usuario o contraseña incorrectas', 'El usuario o contraseña que ingresaste son incorrectos. Vuelve a intentarlo.', 'Aceptar'))
   }
   
-  _signInAsync = async (username, password) => {
+  _signInAsync = async (username, password, driverID) => {
     try {
-      AsyncStorage.multiSet([['username', username], ['password', password]])
+      AsyncStorage.multiSet([['username', username], ['password', password], ['driverID', driverID.toString()]])
       this.props.navigation.navigate('AuthLoading')
     }
     catch(err) {

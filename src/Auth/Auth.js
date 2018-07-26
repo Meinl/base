@@ -18,7 +18,7 @@ class AuthLoadingScreen extends React.Component {
   }
 
   _logout = async () => {
-    await AsyncStorage.multiRemove(['username', 'password'])
+    await AsyncStorage.multiRemove(['username', 'password', 'driverID'])
       .then(this.props.navigation.navigate('Login'))
       .catch(err => console.log(err))
   }
@@ -28,23 +28,25 @@ class AuthLoadingScreen extends React.Component {
     this._retrieveData()
       .then(userData => this.props.dispatch(setUserAsync(userData)))
       .then(({userCredentials}) => {
-        this.props.dispatch(handleInitialData(userCredentials.username, userCredentials.password))
+        this.props.dispatch(handleInitialData(userCredentials.username, userCredentials.password, userCredentials.dirverID))
           .then(() => {
             this.props.dispatch(loadingData(false))
             this.props.navigation.navigate('App')
           })
-          .catch(() => this._logout())
+          .catch((err) => console.log(err) || this._logout())
       })
-      .catch(() => this._logout())
+      .catch((err) => console.log(err) || this._logout())
   }
 
   _retrieveData = async () => {
     try {
-      const userData = await AsyncStorage.multiGet(['username', 'password'])
-      if (userData[0][1] && userData[1][1] != null) {
+      const userData = await AsyncStorage.multiGet(['username', 'password', 'driverID'])
+      console.log(userData)
+      if (userData[0][1] && userData[1][1] && userData[2][1] != null) {
         return {
           username: userData[0][1],
-          password: userData[1][1]
+          password: userData[1][1],
+          dirverID: userData[2][1]
         }
       }
       else this.props.navigation.navigate('Auth')

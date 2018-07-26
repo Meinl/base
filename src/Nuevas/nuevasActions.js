@@ -6,14 +6,15 @@ export function handleAddedOrder() {
   return(dispatch) => {
     const addOrder = database.ref('orders')
     addOrder.on('child_added', snapshot => {
-      dispatch(orderAdded(snapshot.val()))
+      dispatch(orderAdded(snapshot.val(), snapshot.key))
     })
   }
 }
 
-function orderAdded(order) {
+function orderAdded(order, key) {
   return {
     type: ADD_ORDER,
-    order
+    order,
+    key
   }
 }

@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
 
 function mapStateToProps(state) {
   return {
-    newOrders: state.newOrders
+    orders: state.orders
   }
 }
 

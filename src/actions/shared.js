@@ -1,5 +1,5 @@
-import { fetchUser, fetchNewOrdersList } from '../utils/api'
-import { _throwAlert } from '../utils/helpers'
+import { fetchUser, fetchOrdersList } from '../utils/api'
+import { _throwError } from '../utils/helpers'
 
  
 export const RECEIVE_DATA = 'RECEIVE_DATA'
@@ -13,11 +13,11 @@ export function loadingData(loading) {
   }
 }
 
-function receiveData(user, newOrders) {
+function receiveData(user, orders) {
   return {
     type: RECEIVE_DATA,
     user,
-    newOrders
+    orders
   }
 }
 
@@ -28,11 +28,11 @@ export function setUserAsync(userCredentials) {
   }
 }
 
-export function handleInitialData (username, password) {
+export function handleInitialData (username, password, driverID) {
   return (dispatch) => {
     return Promise.all([
       fetchUser(username, password),
-      fetchNewOrdersList(),
+      fetchOrdersList(driverID),
     ]).then(([user, orders]) => {
         return dispatch(receiveData(user.data, orders))
       })
