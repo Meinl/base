@@ -35,7 +35,7 @@ class AuthLoadingScreen extends React.Component {
           })
           .catch(() => this._logout())
       })
-      .catch((err) => this._logout())
+      .catch(() => this._logout())
   }
 
   _retrieveData = async () => {

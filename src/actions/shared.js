@@ -36,6 +36,6 @@ export function handleInitialData (username, password) {
     ]).then(([user, orders]) => {
         return dispatch(receiveData(user.data, orders))
       })
-      .catch(() => _throwAlert('Usuario o contraseña incorrectas', 'El usuario o contraseña que ingresaste son incorrectos. Vuelve a intentarlo.', 'Aceptar'))
+      .catch(err => _throwError(err))
   }
 }

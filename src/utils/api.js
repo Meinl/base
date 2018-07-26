@@ -13,11 +13,9 @@ export function fetchUser(username, password) {
         method: 'GET',
         headers: HEADERS
       })
-      .then(res => res.status === 401 ? _throwError(res.status) : res.json())
-      .then(data => {
-        return data
-      })
-      .catch(err => console.log('err:', err))
+      .then(res => res.json())
+      .then(data => data)
+      .catch(err => _throwError(err))
   )
 }
 

@@ -14,9 +14,9 @@ import {
   ActivityIndicator
 } from 'react-native'
 import { connect } from 'react-redux'
-import { handleInitialData } from '../actions/shared'
-
 import { Ionicons } from '@expo/vector-icons'
+import { fetchUser } from '../utils/api'
+import { _throwAlert } from '../utils/helpers';
 
 //Variable que obtiene las dimensiones de la pantalla del dispositivo
 const { width, height } = Dimensions.get('window')
@@ -88,6 +88,12 @@ class Login extends React.Component {
   }
 
   //Función que guardar el token de login de usuario en AsyncStorage
+  _login = (username, password) => {
+    fetchUser(username, password)
+      .then(() => this._signInAsync(username, password))
+      .catch(() => _throwAlert('Usuario o contraseña incorrectas', 'El usuario o contraseña que ingresaste son incorrectos. Vuelve a intentarlo.', 'Aceptar'))
+  }
+  
   _signInAsync = async (username, password) => {
     try {
       AsyncStorage.multiSet([['username', username], ['password', password]])
@@ -173,7 +179,7 @@ class Login extends React.Component {
           </View>
           <TouchableOpacity 
             disabled={this.state.username === '' || this.state.password === ''}
-            onPress={() => this._signInAsync(this.state.username, this.state.password)}
+            onPress={() => this._login(this.state.username, this.state.password)}
             style={styles.submitButton}
           >
           <Text style={{
