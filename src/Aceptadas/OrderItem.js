@@ -20,14 +20,14 @@ class OrderItem extends React.Component {
       case 'ACC' : {
         return (
           <View style={styles.acceptedLabel}>
-            <Text style={{color:'white', fontFamily:'roboto', textAlign:'center', textAlignVertical:'center', paddingHorizontal:10, paddingVertical:5}}>aceptada</Text>
+            <Text style={{color:'white', fontFamily:'roboto', textAlign:'center', textAlignVertical:'center', paddingHorizontal:10, paddingVertical:3}}>aceptada</Text>
           </View>
         )
       }
       case 'INP' : {
         return (
           <View style={styles.inProgessLabel}>
-            <Text style={{color:'white', fontFamily:'roboto', textAlign:'center', textAlignVertical:'center', paddingHorizontal:10, paddingVertical:5}}>en proceso</Text>
+            <Text style={{color:'white', fontFamily:'roboto', textAlign:'center', textAlignVertical:'center', paddingHorizontal:10, paddingVertical:3}}>en proceso</Text>
           </View>
         )
       }
@@ -38,8 +38,9 @@ class OrderItem extends React.Component {
     const { info, service_id, status } = this.props
     return (
       <View style={styles.careers}>
-        <View style={{paddingTop:15, paddingLeft:15}}>
+        <View style={{paddingTop:15, paddingHorizontal:15, flexDirection:'row', justifyContent:'space-between'}}>
           <Text>ID orden: {service_id}</Text>
+          {this._setOrderStatus(status.event_code)}
         </View>
         <View style={{paddingVertical:10, paddingHorizontal:15, flexDirection:'row', flex:1, alignItems:'center'}}>
           <View style={{width:10, justifyContent:'center'}}>
@@ -50,9 +51,6 @@ class OrderItem extends React.Component {
             <Text style={{fontSize:18, fontFamily:'roboto', color:'#3B3D3D'}}>{info.origin.name}</Text>
             <Text style={{fontSize:18, fontFamily:'roboto-bold', color:'#3B3D3D'}}>{info.datetime.time} hrs</Text>
           </View>
-        </View>
-        <View style={{flex:1, justifyContent:'flex-end', flexDirection:'row', padding:10}}>
-          {this._setOrderStatus(status.event_code)}
         </View>
       </View>
     )
@@ -67,7 +65,7 @@ const styles = StyleSheet.create({
     shadowOffset: {width:0, height:2},
     shadowOpacity:0.1,
     shadowRadius:2,
-    height:height/4.5,
+    height:height/5.5,
     marginHorizontal:20,
     marginVertical: 10,
     borderColor:'#CACACA',
@@ -91,28 +89,16 @@ const styles = StyleSheet.create({
     shadowRadius:2,
   },
   acceptedLabel: {
-    alignSelf:'flex-end',
     backgroundColor:'#148B97',
-    borderRadius:5,
+    borderRadius:2,
     justifyContent:'center',
     alignItems:'center',
-    elevation:3,
-    shadowColor:'black',
-    shadowOffset: {width:0, height:3},
-    shadowOpacity:0.1,
-    shadowRadius:2
   },
   inProgessLabel: {
-    alignSelf:'flex-end',
     backgroundColor:'#eeae01',
-    borderRadius:5,
+    borderRadius:2,
     justifyContent:'center',
     alignItems:'center',
-    elevation:3,
-    shadowColor:'black',
-    shadowOffset: {width:0, height:3},
-    shadowOpacity:0.1,
-    shadowRadius:2
   }
 })
 

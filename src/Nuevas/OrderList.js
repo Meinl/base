@@ -8,7 +8,7 @@ import {
   TouchableOpacity
 } from 'react-native'
 import { connect } from 'react-redux'
-import { handleAddedOrder } from './nuevasActions'
+//import { handleAddedOrder } from './nuevasActions'
 import OrderItem from './OrderItem'
 
 const { width, height } = Dimensions.get('window')
@@ -16,7 +16,7 @@ const { width, height } = Dimensions.get('window')
 class OrderList extends Component {
 
   componentDidMount() {
-    this.props.dispatch(handleAddedOrder())
+    //this.props.dispatch(handleAddedOrder())
   }
 
    render () {

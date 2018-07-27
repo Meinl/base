@@ -10,22 +10,24 @@ import {
   Platform
 } from 'react-native'
 import { connect } from 'react-redux'
+import { handleAcceptedOrder, watchStatusOrders } from './nuevasActions'
 
 const { height } = Dimensions.get('window')
 
 class OrderItem extends React.Component {
 
-  
-
   _acceptOrder = (service_id) => {
+    const { username, password, driverID } = this.props.credentials
     if(Platform.OS === 'ios') {
       ActionSheetIOS.showActionSheetWithOptions({
         options: ['Si', 'No', 'Cancelar'],
         cancelButtonIndex: 2,
-        destructiveButtonIndex: 1,
+        destructiveButtonIndex: 0,
       },
       (buttonIndex) => {
-        console.log('Accept: ',buttonIndex, service_id)
+        if(buttonIndex === 0) {
+          this.props.dispatch(handleAcceptedOrder(username, password, driverID, service_id))
+        }
       })
     }
     else {
@@ -84,10 +86,10 @@ class OrderItem extends React.Component {
         </View>
         <View style={{flex:1, justifyContent:'flex-end', flexDirection:'row', padding:10}}>
           <TouchableOpacity style={{alignSelf:'flex-end', marginRight:10}} onPress={() => this._rejectOrder(service_id)}>    
-              <Text style={{fontSize:16, fontFamily:'roboto', color:'#777879', padding:10}}>RECHAZAR</Text>
+              <Text style={{fontSize:16, fontFamily:'roboto', color:'#777879', padding:13}}>RECHAZAR</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.acceptButton} onPress={() => this._acceptOrder(service_id)}>
-              <Text style={{fontSize:16, color:'white', fontFamily:'roboto', padding:10}}>ACEPTAR</Text>
+              <Text style={{fontSize:16, color:'white', fontFamily:'roboto', padding:13}}>ACEPTAR</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -103,7 +105,7 @@ const styles = StyleSheet.create({
     shadowOffset: {width:0, height:2},
     shadowOpacity:0.1,
     shadowRadius:2,
-    height:height/4.5,
+    height:height/4,
     marginHorizontal:20,
     marginVertical: 10,
     borderColor:'#CACACA',
@@ -140,4 +142,16 @@ const styles = StyleSheet.create({
   }
 })
 
-export default connect()(OrderItem)
+function mapStateToProps(state) {
+  return {
+    credentials: state.user.credentials
+  }
+}
+
+function mapDispatchToProps(dispatch) {
+  watchStatusOrders(dispatch)
+  return {
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(OrderItem)

@@ -1,35 +1,23 @@
 import React from 'react'
 import {
-  ActivityIndicator,
   AsyncStorage,
   StatusBar,
   StyleSheet,
-  Animated,
-  Easing,
   View,
+  Image
 } from 'react-native'
 import { connect } from 'react-redux'
 import { handleInitialData, setUserAsync, loadingData } from '../actions/shared'
 
 class AuthLoadingScreen extends React.Component {
-  constructor() {
-    super()
-    this.animatedValue = new Animated.Value(0.8) //Se inicia el valor de la animación en 0
-  }
-
-  _logout = async () => {
-    await AsyncStorage.multiRemove(['username', 'password', 'driverID'])
-      .then(this.props.navigation.navigate('Login'))
-      .catch(err => console.log(err))
-  }
   
   componentDidMount() {
-    this._logoBounce()
     this._retrieveData()
-      .then(userData => this.props.dispatch(setUserAsync(userData)))
-      .then(({userCredentials}) => {
-        this.props.dispatch(handleInitialData(userCredentials.username, userCredentials.password, userCredentials.dirverID))
+      .then(userData => console.log('1: then retrieve data') || this.props.dispatch(setUserAsync(userData)))
+      .then(({userCredentials}) => { console.log('2: then setuserasync') ||
+        this.props.dispatch(handleInitialData(userCredentials.username, userCredentials.password, userCredentials.driverID))
           .then(() => {
+            console.log('3: handleintialdata')
             this.props.dispatch(loadingData(false))
             this.props.navigation.navigate('App')
           })
@@ -38,15 +26,20 @@ class AuthLoadingScreen extends React.Component {
       .catch((err) => console.log(err) || this._logout())
   }
 
+  _logout = async () => {
+    await AsyncStorage.multiRemove(['username', 'password', 'driverID'])
+      .then(this.props.navigation.navigate('Login'))
+      .catch(err => console.log(err))
+  }
+
   _retrieveData = async () => {
     try {
       const userData = await AsyncStorage.multiGet(['username', 'password', 'driverID'])
-      console.log(userData)
       if (userData[0][1] && userData[1][1] && userData[2][1] != null) {
         return {
           username: userData[0][1],
           password: userData[1][1],
-          dirverID: userData[2][1]
+          driverID: userData[2][1]
         }
       }
       else this.props.navigation.navigate('Auth')
@@ -56,23 +49,11 @@ class AuthLoadingScreen extends React.Component {
     }
   }
 
-  _logoBounce = () => {
-    Animated.loop(
-      Animated.spring(this.animatedValue, {
-        toValue: 1,
-        friction: 3,
-        tension: 40,
-        useNativeDriver: true,
-      })
-    ).start()
-  }
-
   render() {
 
     return (
       <View style={styles.container}>
-        <Animated.Image
-          style={{transform:[{scale: this.animatedValue}]}} 
+        <Image 
           source={require('../../assets/images/logo_moov_login.png')} 
         />
         <StatusBar barStyle="default" />

@@ -1,5 +1,5 @@
 import base64 from 'base-64'
-import { _throwError } from './helpers'
+import { _throwError, _throwAlert } from './helpers'
 import { database } from '../utils/firebase'
 
 const API_PATH = 'http://moov.beenary.cl/driver'
@@ -20,13 +20,11 @@ export function fetchUser(username, password) {
 }
 
 export function fetchOrdersList(driverID) {
-  const orders = database.ref('orders').orderByChild('/assignment/driver_id').equalTo(driverID)
-  return (
-    orders.once('value')
-    .then(snapshot => {
-      return snapshot.val()
-    })
-  )
+  const orders = database.ref('orders').orderByChild('/assignment/driver_id').equalTo(parseInt(driverID))
+  return orders.once('value')
+  .then(snapshot => {
+    return snapshot.val()
+  })
 }
 
 export function toggleTurn(username, password, turn) {
@@ -57,4 +55,19 @@ export function toggleTurn(username, password, turn) {
       .catch(err => console.log('err1:', err))
     )
   }    
+}
+
+export function acceptOrder(username, password, order_id) {
+  HEADERS.append('Authorization', 'Basic ' + base64.encode(`${username}:${password}`))
+  return (
+      fetch(`${API_PATH}/service/accept/${order_id}`, {
+        method: 'GET',
+        headers: HEADERS
+      })
+      .then(res => res.status === 401 ? _throwError(res.status) : res.json())
+      .then(data => {
+        return data.status === 'fail' ? _throwAlert("Ha ocurrido un error", data.data, 'Aceptar') : data
+      })
+      .catch(err => _throwError(err))
+  )
 }
