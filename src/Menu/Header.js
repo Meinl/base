@@ -34,19 +34,7 @@ class Header extends React.Component {
           <Text style={styles.idSmall}>ID Conductor</Text>
           <Text style={{fontFamily:'roboto', fontSize:16, paddingBottom:10}}>{`${user.id}`}</Text>
         </View>
-        <View style={{
-          height:height/10, 
-          flexDirection:'row', 
-          justifyContent:'space-between', 
-          alignItems:'center', 
-          borderBottomColor:'#CACACA',
-          borderBottomWidth:0.3,
-          borderTopColor:'#CACACA', 
-          borderTopWidth:0.3
-          }}>
-          <Text>En Servicio</Text>
-          <Turno/>
-        </View>
+        <Turno/>
       </View>
     )
   }
