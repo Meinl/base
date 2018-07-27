@@ -6,16 +6,16 @@ import {
   SectionList, 
   Dimensions,  
 } from 'react-native'
-import OrderList from '../Nuevas/OrderList';
+import OrderList from './OrderList'
+import { connect } from 'react-redux'
 
-export default class Aceptadas extends Component {
-  
+class Aceptadas extends Component {  
   render () {
     return (
       <View style={styles.container}>
-        <Text>Aceptadas</Text>
+        <OrderList/>
       </View>
-      )
+    )
   }
 }
 
@@ -25,3 +25,5 @@ const styles = StyleSheet.create({
     flex:1
   }
 })
+
+export default connect()(Aceptadas)
