@@ -3,6 +3,7 @@ import {
   AsyncStorage,
   StatusBar,
   StyleSheet,
+  ActivityIndicator,
   View,
   Image
 } from 'react-native'
@@ -56,6 +57,7 @@ class AuthLoadingScreen extends React.Component {
         <Image 
           source={require('../../assets/images/logo_moov_login.png')} 
         />
+        <ActivityIndicator size='large' color='#148B97' style={{marginTop:50}}/>
         <StatusBar barStyle="default" />
       </View>
     );

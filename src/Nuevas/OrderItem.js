@@ -7,7 +7,9 @@ import {
   TouchableOpacity,
   Alert,
   ActionSheetIOS,
-  Platform
+  Platform,
+  Animated,
+  Easing
 } from 'react-native'
 import { connect } from 'react-redux'
 import { handleAcceptedOrder, watchStatusOrders } from './nuevasActions'
@@ -15,6 +17,10 @@ import { handleAcceptedOrder, watchStatusOrders } from './nuevasActions'
 const { height } = Dimensions.get('window')
 
 class OrderItem extends React.Component {
+  constructor(props) {
+    super(props)
+    this.props.dispatch(watchStatusOrders())
+  }
 
   _acceptOrder = (service_id) => {
     const { username, password, driverID } = this.props.credentials
@@ -26,8 +32,10 @@ class OrderItem extends React.Component {
       },
       (buttonIndex) => {
         if(buttonIndex === 0) {
-          this.props.dispatch(handleAcceptedOrder(username, password, driverID, service_id))
-        }
+          this.props.dispatch(handleAcceptedOrder(username, password, service_id, () => {
+            alert('Orden aceptada con éxito')
+          })
+        )}
       })
     }
     else {
@@ -36,7 +44,11 @@ class OrderItem extends React.Component {
         '¿Seguro que quieres aceptar esta orden?',
         [
           {text: 'No', onPress: () => console.log('Accept: Cancel Pressed'), style: 'cancel'},
-          {text: 'Si', onPress: () => console.log('Accept: OK Pressed')},
+          {text: 'Si', onPress: () => 
+            this.props.dispatch(handleAcceptedOrder(username, password, service_id, () => {
+              alert('Orden aceptada con éxito')
+            })
+          )},
         ],
         { cancelable: false }
       )
@@ -68,7 +80,7 @@ class OrderItem extends React.Component {
   }
 
   render() {
-    const { info, service_id } = this.props
+    const { info, service_id, loading } = this.props
     return (
       <View style={styles.careers}>
         <View style={{paddingTop:15, paddingLeft:15}}>
@@ -86,10 +98,10 @@ class OrderItem extends React.Component {
         </View>
         <View style={{flex:1, justifyContent:'flex-end', flexDirection:'row', padding:10}}>
           <TouchableOpacity style={{alignSelf:'flex-end', marginRight:10}} onPress={() => this._rejectOrder(service_id)}>    
-              <Text style={{fontSize:16, fontFamily:'roboto', color:'#777879', padding:13}}>RECHAZAR</Text>
+            <Text style={{fontSize:16, fontFamily:'roboto', color:'#777879', padding:13}}>RECHAZAR</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.acceptButton} onPress={() => this._acceptOrder(service_id)}>
-              <Text style={{fontSize:16, color:'white', fontFamily:'roboto', padding:13}}>ACEPTAR</Text>
+          <TouchableOpacity style={styles.acceptButton} onPress={() => this._acceptOrder(service_id)} disabled={loading ? true : false}>
+            <Text style={{fontSize:16, color:'white', fontFamily:'roboto', padding:13, opacity: loading ? 0.5 : 1}}>ACEPTAR</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -110,7 +122,7 @@ const styles = StyleSheet.create({
     marginVertical: 10,
     borderColor:'#CACACA',
     borderWidth:0.5,
-    borderRadius:2
+    borderRadius:2,
   },
   text: {
     margin: 10,
@@ -144,14 +156,9 @@ const styles = StyleSheet.create({
 
 function mapStateToProps(state) {
   return {
-    credentials: state.user.credentials
+    credentials: state.user.credentials,
+    loading: state.loading
   }
 }
 
-function mapDispatchToProps(dispatch) {
-  watchStatusOrders(dispatch)
-  return {
-  }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(OrderItem)
+export default connect(mapStateToProps)(OrderItem)

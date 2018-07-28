@@ -3,6 +3,7 @@ import { acceptOrder } from '../utils/api'
  
 export const ADD_ORDER = 'ADD_ORDER'
 export const ACCEPT_ORDER = 'ACCEPT_ORDER'
+export const LOADING = 'LOADING'
 
 /*export function handleAddedOrder() {
   return(dispatch) => {
@@ -13,24 +14,28 @@ export const ACCEPT_ORDER = 'ACCEPT_ORDER'
   }
 }*/
 
-/*export function handleAcceptedOrder(username, password, driverID, order_id) {
+export function handleAcceptedOrder(username, password, order_id, cb) {
   return(dispatch) => {
+    dispatch(loading(true))
     acceptOrder(username, password, order_id)
       .then(res => {
-        const accOrder = database.ref('orders').orderByChild('/assignment/driver_id').equalTo(parseInt(driverID))
-        return accOrder.on('child_changed', snapshot => {
-          dispatch(orderAccepted(snapshot.val(), snapshot.key, order_id))
-        })
+        res.status === 'success' ? cb() : null
+        dispatch(loading(false))
       })
       .catch(err => console.log(err))
   }
-}*/
+}
 
-export function watchStatusOrders(dispatch) {
-  const accOrder = database.ref('orders').orderByChild('/assignment/driver_id').equalTo(1)
-  accOrder.on('child_changed', snapshot => {
-    dispatch(orderAccepted(snapshot.val(), snapshot.key))
-  })
+export function watchStatusOrders() {
+  return(dispatch) => {
+    const accOrder = database.ref('orders').orderByChild('/assignment/driver_id').equalTo(1)
+    accOrder.on('child_changed', snapshot => {
+      dispatch(orderAccepted(snapshot.val(), snapshot.key))
+    },
+    (error) => { 
+      console.log(error)
+    })
+  }
 }
 
 function orderAdded(order, key) {
@@ -41,11 +46,17 @@ function orderAdded(order, key) {
   }
 }
 
-function orderAccepted(order, key, order_id) {
+function orderAccepted(order, key) {
   return {
     type: ACCEPT_ORDER,
     order,
     key,
-    order_id
+  }
+}
+
+function loading(loading) {
+  return{
+    type: LOADING,
+    loading
   }
 }
