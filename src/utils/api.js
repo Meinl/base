@@ -6,12 +6,30 @@ const API_PATH = 'http://moov.beenary.cl/driver'
 const HEADERS = new Headers()
 HEADERS.append('Content-Type', 'application/json')
 
-export function fetchUser(username, password) {
-  HEADERS.append('Authorization', 'Basic ' + base64.encode(`${username}:${password}`))
+export function fetchUser(tokenUID) {
+  HEADERS.append('Authorization', 'Basic ' + tokenUID)
   return (
       fetch(`${API_PATH}/auth/login`, {
         method: 'GET',
         headers: HEADERS
+      })
+      .then(res => res.json())
+      .then(data => data)
+      .catch(err => _throwError(err))
+  )
+}
+
+export function setPushToken(tokenUID, tokenDevice) {
+  HEADERS.append('Authorization', 'Basic ' + tokenUID)
+  HEADERS.append('Accept', 'application/json')
+  HEADERS.append('Content-Type', 'application/json')
+  return (
+      fetch(`${API_PATH}/exponentpushtoken/update`, {
+        method: 'POST',
+        headers: HEADERS,
+        body: JSON.stringify({
+          "token": tokenDevice
+        })
       })
       .then(res => res.json())
       .then(data => data)
@@ -27,8 +45,8 @@ export function fetchOrdersList(driverID) {
   })
 }
 
-export function toggleTurn(username, password, turn) {
-  HEADERS.append('Authorization', 'Basic ' + base64.encode(`${username}:${password}`))
+export function toggleTurn(tokenUID, turn) {
+  HEADERS.append('Authorization', 'Basic ' + tokenUID)
   if (turn === false) {
     return (
       fetch(`${API_PATH}/turn/off`, {
@@ -57,8 +75,8 @@ export function toggleTurn(username, password, turn) {
   }    
 }
 
-export function acceptOrder(username, password, order_id) {
-  HEADERS.append('Authorization', 'Basic ' + base64.encode(`${username}:${password}`))
+export function acceptOrder(tokenUID, order_id) {
+  HEADERS.append('Authorization', 'Basic ' + tokenUID)
   return (
       fetch(`${API_PATH}/service/accept/${order_id}`, {
         method: 'GET',

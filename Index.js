@@ -1,6 +1,11 @@
 import React from 'react'
 import { SwitchStack } from './src/Menu/navigators'
-import { AppLoading, Asset, Font, Icon } from 'expo'
+import { 
+  AppLoading, 
+  Asset, 
+  Font, 
+  Icon,
+} from 'expo'
 
 export default class Index extends React.Component {
   state = {

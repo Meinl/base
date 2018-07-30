@@ -1,9 +1,8 @@
 import { fetchUser, fetchOrdersList } from '../utils/api'
-import { _throwError } from '../utils/helpers'
-
+import { _throwError, _signInAsync } from '../utils/helpers'
  
 export const RECEIVE_DATA = 'RECEIVE_DATA'
-export const SET_USER_ASYNC = 'SET_USER_ASYNC'
+export const SET_USER = 'SET_USER'
 export const LOADING = 'LOADING'
 
 export function loadingData(loading) {
@@ -21,17 +20,29 @@ function receiveData(user, orders) {
   }
 }
 
-export function setUserAsync(userCredentials) {
-  return {
-    type: SET_USER_ASYNC,
-    userCredentials
+export function handleUserLogin(tokenUID) {
+  return(dispatch) => {
+    return fetchUser(tokenUID)
+      .then(data => {
+        if(data.status === 'success') 
+         return dispatch(setUser(data.data, tokenUID)) 
+      })
+      .catch(err => console.log(err) || err)
   }
 }
 
-export function handleInitialData (username, password, driverID) {
+export function setUser(user, tokenUID) {
+  return {
+    type: SET_USER,
+    user,
+    tokenUID
+  }
+}
+
+export function handleInitialData (tokenUID, driverID) {
   return (dispatch) => {
     return Promise.all([
-      fetchUser(username, password),
+      fetchUser(tokenUID),
       fetchOrdersList(driverID),
     ]).then(([user, orders]) => {
         return dispatch(receiveData(user.data, orders))

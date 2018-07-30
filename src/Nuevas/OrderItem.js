@@ -13,6 +13,7 @@ import {
 } from 'react-native'
 import { connect } from 'react-redux'
 import { handleAcceptedOrder, watchStatusOrders } from './nuevasActions'
+import { _throwAlert } from '../utils/helpers'
 
 const { height } = Dimensions.get('window')
 
@@ -23,7 +24,7 @@ class OrderItem extends React.Component {
   }
 
   _acceptOrder = (service_id) => {
-    const { username, password, driverID } = this.props.credentials
+    const { tokenUID } = this.props.user
     if(Platform.OS === 'ios') {
       ActionSheetIOS.showActionSheetWithOptions({
         options: ['Si', 'No', 'Cancelar'],
@@ -32,8 +33,8 @@ class OrderItem extends React.Component {
       },
       (buttonIndex) => {
         if(buttonIndex === 0) {
-          this.props.dispatch(handleAcceptedOrder(username, password, service_id, () => {
-            alert('Orden aceptada con éxito')
+          this.props.dispatch(handleAcceptedOrder(tokenUID, service_id, () => {
+            _throwAlert('Orden aceptada', 'Su orden fue aceptada con éxito', 'Entendido')
           })
         )}
       })
@@ -45,8 +46,8 @@ class OrderItem extends React.Component {
         [
           {text: 'No', onPress: () => console.log('Accept: Cancel Pressed'), style: 'cancel'},
           {text: 'Si', onPress: () => 
-            this.props.dispatch(handleAcceptedOrder(username, password, service_id, () => {
-              alert('Orden aceptada con éxito')
+            this.props.dispatch(handleAcceptedOrder(tokenUID, service_id, () => {
+              _throwAlert('Orden aceptada', 'Su orden fue aceptada con éxito', 'Entendido')
             })
           )},
         ],
@@ -156,7 +157,7 @@ const styles = StyleSheet.create({
 
 function mapStateToProps(state) {
   return {
-    credentials: state.user.credentials,
+    user: state.user,
     loading: state.loading
   }
 }

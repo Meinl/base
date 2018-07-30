@@ -4,10 +4,10 @@ import { changeTurn } from '../User/userActions'
 
 export const TOGGLE_TURN = 'TOGGLE_TURN'
 
-export function handleTurn(username, password, turn) {
+export function handleTurn(tokenUID, turn) {
   return (dispatch) => {
     dispatch(changeTurn(turn))
-    toggleTurn(username, password, turn)
+    toggleTurn(tokenUID, turn)
     .then(({status, data}) => {
     })
     .catch(() => {

@@ -10,7 +10,7 @@ import {
 export default class Logout extends React.Component {
 
   _logout = async () => {
-    await AsyncStorage.multiRemove(['username', 'password'])
+    await AsyncStorage.removeItem('tokenUID')
       .then(this.props.navigation.navigate('Login'))
       .catch(err => console.log(err))
   }

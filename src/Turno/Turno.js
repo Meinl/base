@@ -8,12 +8,12 @@ const { width, height } = Dimensions.get('window')
 class Turno extends React.Component {
     
   _handleToggleTurn = () => {
-    const { username, password } = this.props.credentials
+    const { tokenUID } = this.props.user
     if (this.props.turn === true) {
-      this.props.dispatch(handleTurn(username, password, false))
+      this.props.dispatch(handleTurn(tokenUID, false))
     }
     else if(this.props.turn === false) {
-      this.props.dispatch(handleTurn(username, password, true))
+      this.props.dispatch(handleTurn(tokenUID, true))
     }
   }
 
@@ -42,7 +42,7 @@ class Turno extends React.Component {
 function mapStateToProps(state) {
   return {
     turn: state.user.turn,
-    credentials: state.user.credentials
+    user: state.user
   }
 }
 

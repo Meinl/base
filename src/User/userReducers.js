@@ -1,11 +1,7 @@
 import { LOADING, CHANGE_TURN } from './userActions'
-import { RECEIVE_DATA, SET_USER_ASYNC } from '../actions/shared';
+import { RECEIVE_DATA, SET_USER } from '../actions/shared';
 
-const initialState = {
-  credentials: {}
-}
-
-export default function user(state = initialState, action) {
+export default function user(state = {}, action) {
   switch(action.type) {
     case RECEIVE_DATA : 
       return {
@@ -18,10 +14,11 @@ export default function user(state = initialState, action) {
         turn: action.turn
       }
     }
-    case SET_USER_ASYNC : {
+    case SET_USER : {
       return {
         ...state,
-        credentials: action.userCredentials
+        ...action.user,
+        tokenUID: action.tokenUID
       }
     }
     default : 

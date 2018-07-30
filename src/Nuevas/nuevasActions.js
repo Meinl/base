@@ -14,10 +14,10 @@ export const LOADING = 'LOADING'
   }
 }*/
 
-export function handleAcceptedOrder(username, password, order_id, cb) {
+export function handleAcceptedOrder(tokenUID, order_id, cb) {
   return(dispatch) => {
     dispatch(loading(true))
-    acceptOrder(username, password, order_id)
+    acceptOrder(tokenUID, order_id)
       .then(res => {
         res.status === 'success' ? cb() : null
         dispatch(loading(false))

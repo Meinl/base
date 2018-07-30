@@ -13,10 +13,11 @@ import {
   Keyboard,
   ActivityIndicator
 } from 'react-native'
+import base64 from 'base-64'
 import { connect } from 'react-redux'
 import { Ionicons } from '@expo/vector-icons'
 import { fetchUser } from '../utils/api'
-import { _throwAlert } from '../utils/helpers';
+import { _throwAlert, signInAsync } from '../utils/helpers';
 
 //Variable que obtiene las dimensiones de la pantalla del dispositivo
 const { width, height } = Dimensions.get('window')
@@ -89,19 +90,14 @@ class Login extends React.Component {
 
   //Función que guardar el token de login de usuario en AsyncStorage
   _login = (username, password) => {
-    fetchUser(username, password)
-      .then((data) => this._signInAsync(username, password, data.data.id))
+    const tokenUID = base64.encode(`${username}:${password}`)
+    fetchUser(tokenUID)
+      .then(() => 
+        signInAsync(tokenUID)
+        .then(() => this.props.navigation.navigate('AuthLoading'))
+        .catch((err) => console.log(err) || err)
+      )
       .catch(() => _throwAlert('Usuario o contraseña incorrectas', 'El usuario o contraseña que ingresaste son incorrectos. Vuelve a intentarlo.', 'Aceptar'))
-  }
-  
-  _signInAsync = async (username, password, driverID) => {
-    try {
-      AsyncStorage.multiSet([['username', username], ['password', password], ['driverID', driverID.toString()]])
-      this.props.navigation.navigate('AuthLoading')
-    }
-    catch(err) {
-      console.log(err)
-    }
   }
   
   render() {
