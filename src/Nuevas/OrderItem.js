@@ -12,7 +12,7 @@ import {
   Easing
 } from 'react-native'
 import { connect } from 'react-redux'
-import { handleAcceptedOrder, watchStatusOrders } from './nuevasActions'
+import { handleAcceptedOrder } from './nuevasActions'
 import { _throwAlert } from '../utils/helpers'
 
 const { height } = Dimensions.get('window')
@@ -20,7 +20,6 @@ const { height } = Dimensions.get('window')
 class OrderItem extends React.Component {
   constructor(props) {
     super(props)
-    this.props.dispatch(watchStatusOrders())
   }
 
   _acceptOrder = (service_id) => {

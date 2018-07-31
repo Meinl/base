@@ -1,5 +1,5 @@
 import { RECEIVE_DATA } from '../actions/shared';
-import { ADD_ORDER, ACCEPT_ORDER } from './nuevasActions';
+import { ADD_ORDER, ACCEPT_ORDER, REMOVE_ORDER } from './nuevasActions';
 
 export default function orders(state = {}, action) {
     switch(action.type) {
@@ -20,7 +20,19 @@ export default function orders(state = {}, action) {
           [action.key]: action.order
         }
       }
+      case REMOVE_ORDER : {
+        return removeProperty(state, action.key)
+      }
       default : 
         return state
     }
+  }
+
+  const removeProperty = (obj, property) => {
+    return  Object.keys(obj).reduce((acc, key) => {
+      if (key !== property) {
+        return {...acc, [key]: obj[key]}
+      }
+      return acc
+    }, {})
   }

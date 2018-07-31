@@ -12,8 +12,7 @@ import {
 } from 'react-native';
 import { createDrawerNavigator, createStackNavigator, createSwitchNavigator, createMaterialTopTabNavigator, DrawerItems, DrawerActions } from 'react-navigation'
 import { Ionicons } from '@expo/vector-icons'
-import Header from './Header'
-import Logout from '../Auth/Logout'
+import DrawerComponent from './DrawerComponent'
 import BadgeIcon from './BadgeIcon'
 
 const { height, width } = Dimensions.get('window');
@@ -154,24 +153,7 @@ export const Drawer = createDrawerNavigator({
 }, {
   drawerWidth: width,
   contentComponent: (props) =>
-    <View style={{flex:1}}>
-      <View style={{flex:1, padding:20}}>
-        <Header {...props}/>
-        <DrawerItems {...props}
-          activeBackgroundColor='transparent'
-          getLabel = {(route) => (
-            <View style={styles.button}>
-              <Text style={styles.buttonText}>{props.getLabel(route)}</Text>
-              <Ionicons name= 'ios-arrow-forward-outline' size={30} color="#000" />
-            </View>
-          )}
-        />
-        <Logout navigation={props.navigation}/>
-      </View>
-      <TouchableOpacity style={styles.callButton}>
-        <Text style={{color:'white', fontSize:18}}>Llamar a Central</Text>
-      </TouchableOpacity>
-    </View>
+    <DrawerComponent {...props} />
 })
 
 export const SwitchStack = createSwitchNavigator({
