@@ -102,11 +102,39 @@ export const OrdenesStack = createStackNavigator({
   },
 })
 
+export const HistorialTabStack = createMaterialTopTabNavigator({
+  Historial: {
+    screen: Historial
+  }
+},{
+  tabBarOptions: {
+    activeTintColor:'#148B97',
+    upperCaseLabel: false,
+    inactiveTintColor: '#D4D5D5',
+    tabStyle: {
+      paddingTop:25,
+      paddingLeft:20,
+      width: 'auto',
+      flexDirection:'row',
+    },
+    style: {
+      backgroundColor: 'transparent'
+    },
+    labelStyle: {
+      fontSize: 22,
+      fontFamily:'roboto-bold',
+    },
+    indicatorStyle: {
+      opacity: 0
+    }
+  }
+})
+
 export const HistorialStack = createStackNavigator({
   Historial: { 
-    screen: Historial,
+    screen: HistorialTabStack,
     navigationOptions: ({ navigation }) => ({
-      headerTitle: 'Historial',
+      //headerTitle: 'Órdenes',
       headerLeft: 
       <TouchableOpacity
         onPress={() => navigation.dispatch(DrawerActions.toggleDrawer())}
@@ -114,9 +142,26 @@ export const HistorialStack = createStackNavigator({
         <View style={{ paddingHorizontal: 20, paddingVertical:10 }}>
           <Ionicons name= 'ios-menu-outline' size={30} color="#000" />
         </View>
-      </TouchableOpacity>
+      </TouchableOpacity>,
+      headerRight: 
+      <TouchableOpacity
+        onPress={() => {}}
+      >
+        <View style={{ paddingHorizontal: 20, paddingVertical:10 }}>
+          <Ionicons name= 'ios-notifications-outline' size={28} color="#000" />
+        </View>
+      </TouchableOpacity>,
+      headerStyle:{
+        elevation:0,
+        backgroundColor:'white',
+        borderBottomColor:'transparent'
+      }
     })
   }
+},{
+  cardStyle:{
+    backgroundColor:'white'
+  },
 })
 
 export const AuthStack = createStackNavigator({

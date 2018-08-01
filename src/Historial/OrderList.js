@@ -11,12 +11,13 @@ import { connect } from 'react-redux'
 import OrderItem from './OrderItem'
 import { getDateMD } from '../utils/helpers'
 
-class OrderList extends Component {
+const { width, height } = Dimensions.get('window')
 
+class OrderList extends Component {
    render () {
-    if(this.props.accepted.length === 0)
-      return <NoOrders navigation={this.props.navigation}/>
-    else 
+    /*if(this.props.waiting.length === 0)
+      return <NoOrders/>
+    else */
       return (
         <SectionList
           stickySectionHeadersEnabled={true}
@@ -28,7 +29,11 @@ class OrderList extends Component {
               <Text style={{color:'#777879', fontSize:16, fontFamily:'roboto-bold'}}>{title}</Text>
             </View>
           )}
-          sections={this.props.accepted}
+          sections={[
+            { title: 'Title1', data: ['item1', 'item2'] },
+            { title: 'Title2', data: ['item3', 'item4'] },
+            { title: 'Title3', data: ['item5', 'item6'] },
+          ]}
           keyExtractor={(item, index) => item + index}
         />
       )
@@ -51,9 +56,9 @@ const styles = StyleSheet.create({
 })
 
 function mapStateToProps(state) {
-  const orders = Object.keys(state.orders.list).filter(item => state.orders.list[item].status.event_code !== 'WAI').map((item) => state.orders.list[item])
+  const orders = Object.keys(state.orders.list).filter(item => state.orders.list[item].status.event_code === 'WAI').map((item) => state.orders.list[item])
   return {
-    accepted: [
+    history: [
       ...new Set(orders
           .map(({ info: { datetime } }) => getDateMD(datetime))
         )

@@ -1,27 +1,56 @@
-import { RECEIVE_DATA } from '../actions/shared';
-import { ADD_ORDER, ACCEPT_ORDER, REMOVE_ORDER } from './nuevasActions';
+import { RECEIVE_DATA, ORDER_WATCH } from '../actions/shared';
+import { ADD_ORDER, ACCEPT_ORDER, REMOVE_ORDER, RESET_NOTIFICATION } from './nuevasActions';
 
-export default function orders(state = {}, action) {
+export const initialState = {
+  watch: false,
+  list: {},
+  notification: 0
+}
+
+export default function orders(state = initialState, action) {
     switch(action.type) {
       case RECEIVE_DATA : 
         return {
           ...state,
-          ...action.orders
+          list: action.orders
         }
       case ADD_ORDER : {
+        const notification = state.notification
         return {
           ...state,
-          [action.key]: action.order
+          list: {
+            ...state.list,
+            [action.key]: action.order
+          },
+          notification: notification + 1
         }
       }
       case ACCEPT_ORDER : {
         return {
           ...state,
-          [action.key]: action.order
+          list: {
+            ...state.list,
+            [action.key]: action.order
+          }
         }
       }
       case REMOVE_ORDER : {
-        return removeProperty(state, action.key)
+        return {
+          ...state,
+          list: removeProperty(state.list, action.key)
+        }
+      }
+      case ORDER_WATCH : {
+        return {
+          ...state,
+          watch: action.watch
+        }
+      }
+      case RESET_NOTIFICATION: {
+        return {
+          ...state,
+          notification: 0
+        }
       }
       default : 
         return state

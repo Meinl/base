@@ -1,33 +1,33 @@
 import React, { Component } from 'react'
 import {
   View,
-  Text,
   StyleSheet,
-  ScrollView, 
-  Dimensions,
-  TouchableWithoutFeedback,
-  Animated
 } from 'react-native'
+import OrderList from './OrderList'
+import { connect } from 'react-redux'
 
-const { width, height } = Dimensions.get('window');
+class Nuevas extends Component {  
 
-class Historial extends Component {  
   render () {
     return (
       <View style={styles.container}>
-        <Text>Historial</Text>
+        <OrderList/>
       </View>
-      )
+    )
   }
 }
 
-export default Historial
-
 const styles = StyleSheet.create({
   container: {
-    flex:1,
-    justifyContent:'center',
-    alignItems:'center',
     marginTop:10,
+    flex:1
   }
 })
+
+function mapStateToProps(state) {
+  return {
+    orders: state.orders
+  }
+}
+
+export default connect(mapStateToProps)(Nuevas)

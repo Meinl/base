@@ -2,15 +2,17 @@ import { database } from '../utils/firebase'
 import { acceptOrder } from '../utils/api'
  
 export const ADD_ORDER = 'ADD_ORDER'
-export const ACCEPT_ORDER = 'ACCEPT_ORDER'
 export const REMOVE_ORDER = 'REMOVE_ORDER'
+export const ACCEPT_ORDER = 'ACCEPT_ORDER'
+export const RESET_NOTIFICATION = 'RESET_NOTIFICATION'
 export const LOADING = 'LOADING'
 
 export function handleAddedOrder(id) {
-  return(dispatch) => {
+  return(dispatch, getState) => {
     const addOrder = database.ref('orders').orderByChild('/assignment/driver_id').equalTo(id)
     addOrder.on('child_added', snapshot => {
-      dispatch(orderAdded(snapshot.val(), snapshot.key))
+      if(getState().orders.watch === true)
+        dispatch(orderAdded(snapshot.val(), snapshot.key))
     })
   }
 }
@@ -20,6 +22,9 @@ export function handleRemovedOrder(id) {
     const addOrder = database.ref('orders').orderByChild('/assignment/driver_id').equalTo(id)
     addOrder.on('child_removed', snapshot => {
       dispatch(orderRemoved(snapshot.val(), snapshot.key))
+    },
+    (error) => { 
+      console.log(error)
     })
   }
 }
@@ -76,5 +81,11 @@ function loading(loading) {
   return{
     type: LOADING,
     loading
+  }
+}
+
+export function resetNotification() {
+  return {
+    type: RESET_NOTIFICATION
   }
 }

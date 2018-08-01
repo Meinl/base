@@ -32,9 +32,9 @@ class BadgeIcon extends React.Component {
     return(
       <View>
         { 
-          this.props.turn ? 
-            <Animated.View style={[{ backgroundColor: 'red', borderRadius: 9, width: 18, height: 18, justifyContent: 'center', alignItems: 'center' }, animatedStyle]}>
-              <Text style={{ color: 'white', fontSize:12, fontFamily:'roboto-bold' }}>{this.props.turn ? 1 : 0}</Text>
+          this.props.notification > 0 ? 
+            <Animated.View style={[{ backgroundColor: '#95cc59', borderRadius: 4, width: 15, height: 15, justifyContent: 'center', alignItems: 'center' }, animatedStyle]}>
+              <Text style={{ color: 'white', fontSize:13, fontFamily:'roboto-bold' }}>{this.props.notification}</Text>
             </Animated.View>
           : null
         }
@@ -45,7 +45,7 @@ class BadgeIcon extends React.Component {
 
 function mapStateToProps(state) {
     return {
-      turn: state.user.turn,
+      notification: state.orders.notification,
     }
   }
 

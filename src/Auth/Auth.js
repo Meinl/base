@@ -8,8 +8,8 @@ import {
   Image
 } from 'react-native'
 import { connect } from 'react-redux'
-import { handleInitialData, setUserAsync, loadingData, handleUserLogin } from '../actions/shared'
-
+import { handleInitialData, watchOrders, loadingData, handleUserLogin } from '../actions/shared'
+import { watchStatusOrders, handleAddedOrder, handleRemovedOrder } from '../Nuevas/nuevasActions'
 class AuthLoadingScreen extends React.Component {
   state = {
     notification: {}
@@ -17,10 +17,14 @@ class AuthLoadingScreen extends React.Component {
   
   componentDidMount() {
     this._retrieveData()
-      .then(tokenUID => {  
+      .then(tokenUID => {
+        this.props.dispatch(watchStatusOrders(this.props.user.id))
+        this.props.dispatch(handleAddedOrder(this.props.user.id))
+        this.props.dispatch(handleRemovedOrder(this.props.user.id))  
         this.props.dispatch(handleInitialData(tokenUID, this.props.user.id))
           .then(() => {
             this.props.dispatch(loadingData(false))
+            this.props.dispatch(watchOrders(true))
             this.props.navigation.navigate('App')
           })
           .catch((err) => console.log(err) || this._logout())

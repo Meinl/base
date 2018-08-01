@@ -4,6 +4,7 @@ import { _throwError, _signInAsync } from '../utils/helpers'
 export const RECEIVE_DATA = 'RECEIVE_DATA'
 export const SET_USER = 'SET_USER'
 export const LOADING = 'LOADING'
+export const ORDER_WATCH = 'ORDER_WATCH'
 
 export function loadingData(loading) {
   return {
@@ -17,6 +18,13 @@ function receiveData(user, orders) {
     type: RECEIVE_DATA,
     user,
     orders
+  }
+}
+
+export function watchOrders(watch) {
+  return {
+    type: ORDER_WATCH,
+    watch
   }
 }
 

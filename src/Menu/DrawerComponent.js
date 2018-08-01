@@ -11,7 +11,6 @@ import { Ionicons } from '@expo/vector-icons'
 import Header from './Header'
 import { DrawerItems } from 'react-navigation'
 import Logout from '../Auth/Logout'
-import { watchStatusOrders, handleAddedOrder, handleRemovedOrder } from '../Nuevas/nuevasActions'
 import { connect } from 'react-redux'
 import { Permissions, Notifications } from 'expo'
 import { setPushToken } from '../utils/api'
@@ -19,13 +18,7 @@ import { setPushToken } from '../utils/api'
 const { height } = Dimensions.get('window');
 
 class DrawerComponent extends React.Component {
-  constructor(props) {
-    super(props)
-    this.props.dispatch(watchStatusOrders(this.props.user.id))
-    this.props.dispatch(handleAddedOrder(this.props.user.id))
-    this.props.dispatch(handleRemovedOrder(this.props.user.id))
-  }
-
+ 
   componentDidMount() {
     this._registerForPushNotificationsAsync(this.props.user.tokenUID)
     this._notificationSubscription = Notifications.addListener(this._handleNotification)
@@ -43,7 +36,6 @@ class DrawerComponent extends React.Component {
       Permissions.NOTIFICATIONS
     )
     let finalStatus = existingStatus
-    console.log('1', finalStatus)
   
     // only ask if permissions have not already been determined, because
     // iOS won't necessarily prompt the user a second time.

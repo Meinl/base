@@ -83,8 +83,9 @@ class OrderItem extends React.Component {
     const { info, service_id, loading } = this.props
     return (
       <View style={styles.careers}>
-        <View style={{paddingTop:15, paddingLeft:15}}>
-          <Text>ID orden: {service_id}</Text>
+        <View style={{paddingTop:15, paddingHorizontal:15, flexDirection:'row', justifyContent:'space-between'}}>
+          <Text style={{fontSize:12, color:'#3b3d3d', fontFamily:'roboto'}}>ID orden: {service_id}</Text>
+          <View style={{ backgroundColor: '#95cc59', borderRadius: 4, width: 15, height: 15, justifyContent: 'center', alignItems: 'center' }} />
         </View>
         <View style={{paddingVertical:10, paddingHorizontal:15, flexDirection:'row', flex:1, alignItems:'center'}}>
           <View style={{width:10, justifyContent:'center'}}>
@@ -92,16 +93,16 @@ class OrderItem extends React.Component {
             <View style={{backgroundColor:'transparent', height:16, width:16, borderRadius:8, borderWidth:1,borderColor:'#148B97', alignSelf:'center', position:'absolute'}}></View>
           </View>
           <View style={{paddingLeft:15}}>
-            <Text style={{fontSize:18, fontFamily:'roboto', color:'#3B3D3D'}}>{info.origin.name}</Text>
-            <Text style={{fontSize:18, fontFamily:'roboto-bold', color:'#3B3D3D'}}>{info.datetime.time} hrs</Text>
+            <Text style={{fontSize:16, fontFamily:'roboto', color:'#3b3d3d'}}>{info.origin.name}</Text>
+            <Text style={{fontSize:16, fontFamily:'roboto-bold', color:'#3B3D3D'}}>{info.datetime.time} hrs</Text>
           </View>
         </View>
         <View style={{flex:1, justifyContent:'flex-end', flexDirection:'row', padding:10}}>
-          <TouchableOpacity style={{alignSelf:'flex-end', marginRight:10}} onPress={() => this._rejectOrder(service_id)}>    
-            <Text style={{fontSize:16, fontFamily:'roboto', color:'#777879', padding:13}}>RECHAZAR</Text>
+          <TouchableOpacity style={styles.rejectButton} onPress={() => this._rejectOrder(service_id)}>    
+            <Text style={{fontSize:14, fontFamily:'roboto', color:'#777879', paddingHorizontal: 15}}>RECHAZAR</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.acceptButton} onPress={() => this._acceptOrder(service_id)} disabled={loading ? true : false}>
-            <Text style={{fontSize:16, color:'white', fontFamily:'roboto', padding:13, opacity: loading ? 0.5 : 1}}>ACEPTAR</Text>
+            <Text style={{fontSize:14, paddingHorizontal: 15, color:'white', fontFamily:'roboto', opacity: loading ? 0.5 : 1}}>ACEPTAR</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -141,7 +142,8 @@ const styles = StyleSheet.create({
     shadowRadius:2,
   },
   acceptButton: {
-    alignSelf:'flex-end', 
+    height:42,
+    alignSelf:'flex-end',
     backgroundColor:'#148B97',
     borderRadius:5,
     justifyContent:'center',
@@ -151,6 +153,13 @@ const styles = StyleSheet.create({
     shadowOffset: {width:0, height:3},
     shadowOpacity:0.1,
     shadowRadius:2
+  },
+  rejectButton: {
+    height:42,
+    alignSelf:'flex-end',
+    justifyContent:'center',
+    alignItems:'center',
+    marginHorizontal:10
   }
 })
 

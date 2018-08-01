@@ -13,7 +13,7 @@ class Aceptadas extends Component {
   render () {
     return (
       <View style={styles.container}>
-        <OrderList/>
+        <OrderList navigation={this.props.navigation}/>
       </View>
     )
   }

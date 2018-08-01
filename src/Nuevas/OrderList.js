@@ -7,14 +7,19 @@ import {
   Dimensions,
   TouchableOpacity
 } from 'react-native'
+import NoOrders from './NoOrders'
 import { connect } from 'react-redux'
 import OrderItem from './OrderItem'
+import { getDateMD } from '../utils/helpers'
 
 const { width, height } = Dimensions.get('window')
 
 class OrderList extends Component {
    render () {
-    return (
+    if(this.props.waiting.length === 0)
+      return <NoOrders/>
+    else 
+      return (
         <SectionList
           stickySectionHeadersEnabled={true}
           renderItem={({item, index, section}) =>
@@ -25,9 +30,7 @@ class OrderList extends Component {
               <Text style={{color:'#777879', fontSize:16, fontFamily:'roboto-bold'}}>{title}</Text>
             </View>
           )}
-          sections={[
-            {title: '30, Jueves, Junio', data: this.props.waiting}
-          ]}
+          sections={this.props.waiting}
           keyExtractor={(item, index) => item + index}
         />
       )
@@ -50,8 +53,18 @@ const styles = StyleSheet.create({
 })
 
 function mapStateToProps(state) {
+  const orders = Object.keys(state.orders.list).filter(item => state.orders.list[item].status.event_code === 'WAI').map((item) => state.orders.list[item])
   return {
-    waiting: Object.keys(state.orders).filter(item => state.orders[item].status.event_code === 'WAI').map((item) => state.orders[item])
+    waiting: [
+      ...new Set(orders
+          .map(({ info: { datetime } }) => getDateMD(datetime))
+        )
+    ].map((title) => (
+      {
+        title,
+        data: orders.filter(({ info: { datetime } }) => getDateMD(datetime) === title)
+      }
+    ))
   }
 }
 
