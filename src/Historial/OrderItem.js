@@ -13,11 +13,12 @@ const { height } = Dimensions.get('window')
 class OrderItem extends React.Component {
 
   render() {
+    const { records } = this.props
     return (
       <View style={styles.careers}>
         <View style={{padding:15, flex:1}}>
           <View>
-            <Text style={{fontSize:12, color:'#3b3d3d', fontFamily:'roboto'}}>ID orden</Text>
+            <Text style={{fontSize:12, color:'#3b3d3d', fontFamily:'roboto'}}>{`ID orden ${records.id}`}</Text>
           </View>
           <View>
             <View style={{flexDirection:'row', marginTop:8}}>
@@ -52,7 +53,7 @@ class OrderItem extends React.Component {
             </View>
             <View style={{flexDirection:'row', justifyContent:'space-between'}}>
               <Text style={{fontSize:16, color:'#3b3d3d', fontFamily:'roboto'}}>14:50</Text>
-              <Text style={{fontSize:16, color:'#3b3d3d', fontFamily:'roboto'}}>$3250</Text>
+              <Text style={{fontSize:16, color:'#3b3d3d', fontFamily:'roboto'}}>{records.rate ? '$ ' + records.rate.value : '$ ' + 0}</Text>
             </View>
           </View>
         </View>
@@ -110,7 +111,6 @@ const styles = StyleSheet.create({
 function mapStateToProps(state) {
   return {
     user: state.user,
-    loading: state.loading
   }
 }
 

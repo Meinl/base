@@ -89,3 +89,18 @@ export function acceptOrder(tokenUID, order_id) {
       .catch(err => _throwError(err))
   )
 }
+
+export function getRecords(tokenUID, page, qty) {
+  HEADERS.append('Authorization', 'Basic ' + tokenUID)
+  return (
+      fetch(`${API_PATH}/record/list/${qty}/${page}`, {
+        method: 'GET',
+        headers: HEADERS
+      })
+      .then(res => res.status === 401 ? _throwError(res.status) : res.json())
+      .then(data => {
+        return data.status === 'fail' ? _throwAlert("Ha ocurrido un error", data.data, 'Aceptar') : data
+      })
+      .catch(err => _throwError(err))
+  )
+}
