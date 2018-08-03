@@ -12,7 +12,7 @@ import {
   Easing
 } from 'react-native'
 import { connect } from 'react-redux'
-import { handleAcceptedOrder } from './nuevasActions'
+import { handleAcceptedOrder, handleRejectedOrder } from './nuevasActions'
 import { _throwAlert } from '../utils/helpers'
 
 const { height } = Dimensions.get('window')
@@ -48,7 +48,7 @@ class OrderItem extends React.Component {
             this.props.dispatch(handleAcceptedOrder(tokenUID, service_id, () => {
               _throwAlert('Orden aceptada', 'Su orden fue aceptada con éxito', 'Entendido')
             })
-          )},
+          )}
         ],
         { cancelable: false }
       )
@@ -56,6 +56,7 @@ class OrderItem extends React.Component {
   }
 
   _rejectOrder = (service_id) => {
+    const { tokenUID } = this.props.user
     if(Platform.OS === 'ios') {
       ActionSheetIOS.showActionSheetWithOptions({
         options: ['Si', 'No', 'Cancelar'],
@@ -63,7 +64,11 @@ class OrderItem extends React.Component {
         destructiveButtonIndex: 1,
       },
       (buttonIndex) => {
-        console.log('Reject: ', buttonIndex, service_id)
+        if(buttonIndex === 0) {
+          this.props.dispatch(handleRejectedOrder(tokenUID, service_id, () => {
+            _throwAlert('Orden rechazada', 'Su orden fue rechazada con éxito', 'Entendido')
+          })
+        )}
       })
     }
     else {
@@ -72,7 +77,11 @@ class OrderItem extends React.Component {
         '¿Seguro que quieres rechazar esta orden?',
         [
           {text: 'No', onPress: () => console.log('Reject: Cancel Pressed'), style: 'cancel'},
-          {text: 'Si', onPress: () => console.log('Reject: OK Pressed')},
+          {text: 'Si', onPress: () => 
+            this.props.dispatch(handleRejectedOrder(tokenUID, service_id, () => {
+              _throwAlert('Orden rechazada', 'Su orden fue rechazada con éxito', 'Entendido')
+            })
+          )}
         ],
         { cancelable: false }
       )

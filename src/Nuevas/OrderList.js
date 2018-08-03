@@ -30,7 +30,7 @@ class OrderList extends Component {
               <Text style={{color:'#777879', fontSize:16, fontFamily:'roboto-bold'}}>{title}</Text>
             </View>
           )}
-          sections={this.props.waiting}
+          sections={[{ title: 'Title1', data: this.props.waiting }]}
           keyExtractor={(item, index) => item + index}
         />
       )
@@ -53,18 +53,8 @@ const styles = StyleSheet.create({
 })
 
 function mapStateToProps(state) {
-  const orders = Object.keys(state.orders.list).filter(item => state.orders.list[item].status.event_code === 'WAI').map((item) => state.orders.list[item])
   return {
-    waiting: [
-      ...new Set(orders
-          .map(({ info: { datetime } }) => getDateMD(datetime))
-        )
-    ].map((title) => (
-      {
-        title,
-        data: orders.filter(({ info: { datetime } }) => getDateMD(datetime) === title)
-      }
-    ))
+    waiting: Object.keys(state.orders.list).filter(item => state.orders.list[item].status.event_code === 'WAI').map((item) => state.orders.list[item])
   }
 }
 

@@ -5,22 +5,33 @@ import {
   TouchableOpacity,
   View,
   Text,
-  Platform
+  Platform,
 } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
 import Header from './Header'
 import { DrawerItems } from 'react-navigation'
 import Logout from '../Auth/Logout'
 import { connect } from 'react-redux'
-import { Permissions, Notifications } from 'expo'
-import { setPushToken } from '../utils/api'
+import { Permissions, Notifications, Location } from 'expo'
+import { setPushToken, sendPosition } from '../utils/api'
 
 const { height } = Dimensions.get('window');
 
 class DrawerComponent extends React.Component {
+  state = {
+    errorMessage:'',
+    coords: {
+      lat: 0,
+      lng: 0,
+      hight:0,
+      angle:0
+    }
+  }
  
   componentDidMount() {
-    this._registerForPushNotificationsAsync(this.props.user.tokenUID)
+    const { tokenUID } = this.props.user
+    this._getLocationAsync(tokenUID)
+    this._registerForPushNotificationsAsync(tokenUID)
     this._notificationSubscription = Notifications.addListener(this._handleNotification)
     if (Platform.OS === 'android') {
       Expo.Notifications.createChannelAndroidAsync('orders', {
@@ -29,6 +40,33 @@ class DrawerComponent extends React.Component {
         vibrate: [0, 250, 250, 250],
       })
     }
+  }
+
+  _getLocation = (location) => {
+    const { tokenUID } = this.props.user
+    const { latitude, longitude, altitude, heading } = location.coords
+    this.setState({
+      coords: {
+        lat: latitude,
+        lng: longitude,
+        hight: altitude,
+        angle: heading
+      }
+    })
+    sendPosition(tokenUID, this.state.coords)
+  }
+
+  _getLocationAsync = async () => {
+    let { status } = await Permissions.askAsync(Permissions.LOCATION);
+    if (status !== 'granted') {
+      this.setState({
+        errorMessage: 'Permiso denegado para acceder a su posición',
+      })
+      alert(this.state.errorMessage)
+    }
+    const location = await Location.watchPositionAsync({
+      enableHighAccuracy: true, distanceInterval: 0, timeInterval: 0
+    }, this._getLocation)
   }
 
   _registerForPushNotificationsAsync = async(tokenUID) => {

@@ -27,7 +27,7 @@ class OrderItem extends React.Component {
                 <View style={{backgroundColor:'transparent', height:16, width:16, borderRadius:8, borderWidth:1,borderColor:'#148B97', alignSelf:'center', position:'absolute'}}></View>
               </View>
               <View style={{marginLeft:10}}>
-                <Text style={{color:'#3b3d3d', fontSize:16, fontFamily:'roboto'}}>Las condes....</Text>
+                <Text style={{color:'#3b3d3d', fontSize:16, fontFamily:'roboto'}}>{records.origin.name}</Text>
               </View>
             </View>
             <View style={{width:10, justifyContent:'center', alignItems:'center', marginVertical:5}}>
@@ -40,7 +40,7 @@ class OrderItem extends React.Component {
                 <View style={{backgroundColor:'transparent', height:16, width:16, borderRadius:8, borderWidth:1,borderColor:'#148B97', alignSelf:'center', position:'absolute'}}></View>
               </View>
               <View style={{marginLeft:10}}>
-                <Text style={{color:'#3b3d3d', fontSize:16, fontFamily:'roboto'}}>Las condes....</Text>
+                <Text style={{color:'#3b3d3d', fontSize:16, fontFamily:'roboto'}}>{records.destiny.name}</Text>
               </View>
             </View>
           </View>
@@ -52,7 +52,7 @@ class OrderItem extends React.Component {
               <Text style={{fontSize:12, color:'#9d9e9e', fontFamily:'roboto'}}>Total</Text>
             </View>
             <View style={{flexDirection:'row', justifyContent:'space-between'}}>
-              <Text style={{fontSize:16, color:'#3b3d3d', fontFamily:'roboto'}}>14:50</Text>
+              <Text style={{fontSize:16, color:'#3b3d3d', fontFamily:'roboto'}}>{records.datetime.substr(11, 5)}</Text>
               <Text style={{fontSize:16, color:'#3b3d3d', fontFamily:'roboto'}}>{records.rate ? '$ ' + records.rate.value : '$ ' + 0}</Text>
             </View>
           </View>

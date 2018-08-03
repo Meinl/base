@@ -1,5 +1,5 @@
 import { database } from '../utils/firebase'
-import { acceptOrder } from '../utils/api'
+import { acceptOrder, rejectOrder } from '../utils/api'
  
 export const ADD_ORDER = 'ADD_ORDER'
 export const REMOVE_ORDER = 'REMOVE_ORDER'
@@ -33,6 +33,18 @@ export function handleAcceptedOrder(tokenUID, order_id, cb) {
   return(dispatch) => {
     dispatch(loading(true))
     acceptOrder(tokenUID, order_id)
+      .then(res => {
+        res.status === 'success' ? cb() : null
+        dispatch(loading(false))
+      })
+      .catch(err => console.log(err) || dispatch(loading(false)))
+  }
+}
+
+export function handleRejectedOrder(tokenUID, order_id, cb) {
+  return(dispatch) => {
+    dispatch(loading(true))
+    rejectOrder(tokenUID, order_id)
       .then(res => {
         res.status === 'success' ? cb() : null
         dispatch(loading(false))

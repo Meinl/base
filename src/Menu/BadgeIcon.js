@@ -33,8 +33,8 @@ class BadgeIcon extends React.Component {
       <View>
         { 
           this.props.notification > 0 ? 
-            <Animated.View style={[{ backgroundColor: '#95cc59', borderRadius: 4, width: 15, height: 15, justifyContent: 'center', alignItems: 'center' }, animatedStyle]}>
-              <Text style={{ color: 'white', fontSize:13, fontFamily:'roboto-bold' }}>{this.props.notification}</Text>
+            <Animated.View style={[{ backgroundColor: '#95cc59', borderRadius: 4, width: 20, height: 20, justifyContent: 'center', alignItems: 'center' }, animatedStyle]}>
+              <Text style={{ color: 'white', fontSize:12, fontFamily:'roboto-bold' }}>{this.props.notification}</Text>
             </Animated.View>
           : null
         }

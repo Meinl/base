@@ -40,15 +40,16 @@ class OrderList extends Component {
           loading:false,
           refreshing: false
         })
-        if(records.data.length < qty)
-        console.log('entro: ', this.state.fetchMore)
-        this.setState({
-          data: [...this.state.data, ...records.data],
-          loading:false,
-          refreshing: false,
-          fetchMore: false
-        })
+        if(records.data.length < qty) {
+          console.log('entro: ', this.state.fetchMore)
+          this.setState({
+            data: [...this.state.data, ...records.data],
+            loading:false,
+            refreshing: false,
+            fetchMore: false
+          })
         console.log('salio: ', this.state.fetchMore)
+        }
       })
       .catch(err => {
         this.setState({
@@ -61,7 +62,7 @@ class OrderList extends Component {
   }
 
   _handleLoadMore = () => {
-    if(this.state.fetchMore)
+    if(this.state.fetchMore) {
       this.setState(
         {
           page: this.state.page + 1
@@ -70,22 +71,26 @@ class OrderList extends Component {
           this._makeRecordsRequest()
         }
       )
+    }
   }
 
   _renderFooter = () => {
-    if (!this.state.loading && this.state.fetchMore) return null
-    else if(!this.state.fetchMore) return <View style={{paddingBottom: 10, justifyContent:'center', alignItems:'center'}}><Text style={{fontFamily:'roboto', fontSize:12}}>No hay más resultados</Text></View>
-    return (
-      <View
-        style={{
-          paddingVertical: 20,
-        }}
-      >
-    
-      <ActivityIndicator animating size="large" />
-
-      </View>
-    )
+    if (!this.state.loading && this.state.fetchMore) 
+      return null
+    else if(!this.state.fetchMore) {
+      return <View style={{paddingBottom: 10, justifyContent:'center', alignItems:'center'}}><Text style={{fontFamily:'roboto', fontSize:12}}>No hay más resultados</Text></View>
+    }
+    else {
+      return (
+        <View
+          style={{
+            paddingVertical: 20,
+          }}
+        >
+        <ActivityIndicator animating size="large" />
+        </View>
+      )
+    }
   }
 
   render () {
@@ -94,6 +99,7 @@ class OrderList extends Component {
   else */
     return (
       <SectionList
+        removeClippedSubviews={true}
         ListFooterComponent={this._renderFooter}
         refreshing={this.state.refreshing}
         onRefresh={()=>{}}
