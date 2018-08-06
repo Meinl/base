@@ -129,9 +129,9 @@ export function sendPosition(tokenUID, coords) {
       fetch(`${API_PATH}/position/new`, {
         method: 'POST',
         headers: HEADERS,
-        body: JSON.stringify({
+        body: JSON.stringify(
           coords
-        })
+        )
       })
       .then(res => console.log(res) || res.json())
       .then(data => console.log(data) || data)

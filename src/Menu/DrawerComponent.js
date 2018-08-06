@@ -27,6 +27,7 @@ class DrawerComponent extends React.Component {
       angle:0
     }
   }
+  location = null
  
   componentDidMount() {
     const { tokenUID } = this.props.user
@@ -40,6 +41,10 @@ class DrawerComponent extends React.Component {
         vibrate: [0, 250, 250, 250],
       })
     }
+  }
+
+  componentWillUnmount() {
+    this.location.remove()
   }
 
   _getLocation = (location) => {
@@ -64,7 +69,7 @@ class DrawerComponent extends React.Component {
       })
       alert(this.state.errorMessage)
     }
-    const location = await Location.watchPositionAsync({
+    this.location = await Location.watchPositionAsync({
       enableHighAccuracy: true, distanceInterval: 0, timeInterval: 0
     }, this._getLocation)
   }

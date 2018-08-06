@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
 
 function mapStateToProps(state) {
   return {
-    waiting: Object.keys(state.orders.list).filter(item => state.orders.list[item].status.event_code === 'WAI').map((item) => state.orders.list[item])
+    waiting: Object.keys(state.orders.list).filter(item => state.orders.list[item].status.event_code === 'WAT').map((item) => state.orders.list[item])
   }
 }
 
