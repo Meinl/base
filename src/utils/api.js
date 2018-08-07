@@ -2,7 +2,7 @@ import base64 from 'base-64'
 import { _throwError, _throwAlert } from './helpers'
 import { database } from '../utils/firebase'
 
-const API_PATH = 'http://moov.beenary.cl/driver'
+const API_PATH = 'http://backmoov.beenary.cl/driver'
 const HEADERS = new Headers()
 HEADERS.append('Content-Type', 'application/json')
 

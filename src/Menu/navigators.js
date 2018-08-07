@@ -8,10 +8,11 @@ import {
   AsyncStorage,
   ScrollView,
   Switch,
+  Linking,
   Dimensions
 } from 'react-native';
 import { createDrawerNavigator, createStackNavigator, createSwitchNavigator, createMaterialTopTabNavigator, DrawerItems, DrawerActions } from 'react-navigation'
-import { Ionicons, MaterialIcons } from '@expo/vector-icons'
+import { Ionicons, FontAwesome } from '@expo/vector-icons'
 import DrawerComponent from './DrawerComponent'
 import BadgeIcon from './BadgeIcon'
 
@@ -98,13 +99,21 @@ export const OrdenesStack = createStackNavigator({
   },
   Detail: {
     screen: OrderDetail,
-    navigationOptions: () => ({
-      headerRight: 
+    navigationOptions: ({ navigation }) => ({
+      headerLeft: 
       <TouchableOpacity
-        onPress={() => {}}
+        onPress={() => navigation.goBack()}
       >
         <View style={{ paddingHorizontal: 20, paddingVertical:10 }}>
-          <MaterialIcons name= 'directions' size={28} color="#000" />
+          <Ionicons name= 'md-arrow-back' size={30} color="#000" />
+        </View>
+      </TouchableOpacity>,
+      headerRight: 
+      <TouchableOpacity
+        onPress={() => Linking.openURL(`https://waze.com/ul?ll=${latitude},${longitude}&navigate=yes`)}
+      >
+        <View style={{ paddingHorizontal: 20, paddingVertical:10 }}>
+          <Ionicons name='ios-navigate-outline' size={26} color="#000" />
         </View>
       </TouchableOpacity>,
       headerStyle:{
