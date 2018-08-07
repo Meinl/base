@@ -21,14 +21,14 @@ class OrderList extends Component {
         <SectionList
           stickySectionHeadersEnabled={true}
           renderItem={({item, index, section}) =>
-              <OrderItem {...item}/>
+              <OrderItem {...item} navigation={this.props.navigation}/>
             }
           renderSectionHeader={({section: {title}}) => (
             <View style={styles.sectionHeader}>
               <Text style={{color:'#777879', fontSize:16, fontFamily:'roboto-bold'}}>{title}</Text>
             </View>
           )}
-          sections={[{ title: 'Title1', data: this.props.accepted }]}
+          sections={this.props.accepted}
           keyExtractor={(item, index) => item + index}
         />
       )
@@ -51,8 +51,18 @@ const styles = StyleSheet.create({
 })
 
 function mapStateToProps(state) {
+  const orders = Object.keys(state.orders.list).filter(item => state.orders.list[item].status.event_code !== 'WAT').map((item) => state.orders.list[item])
+  const group_to_values = orders.reduce(function (obj, item) {
+    obj[item.info.datetime] = obj[item.info.datetime] || []
+    obj[item.info.datetime].push(item)
+    return obj
+  }, {})
+
+  const groups = Object.keys(group_to_values).map(function (key) {
+      return {title: getDateMD(key), data: group_to_values[key]}
+  })
   return {
-    accepted: Object.keys(state.orders.list).filter(item => state.orders.list[item].status.event_code !== 'WAI').map((item) => state.orders.list[item])
+    accepted: groups
   }
 }
 

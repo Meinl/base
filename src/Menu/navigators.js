@@ -11,7 +11,7 @@ import {
   Dimensions
 } from 'react-native';
 import { createDrawerNavigator, createStackNavigator, createSwitchNavigator, createMaterialTopTabNavigator, DrawerItems, DrawerActions } from 'react-navigation'
-import { Ionicons } from '@expo/vector-icons'
+import { Ionicons, MaterialIcons } from '@expo/vector-icons'
 import DrawerComponent from './DrawerComponent'
 import BadgeIcon from './BadgeIcon'
 
@@ -25,7 +25,7 @@ import Recovery from '../Auth/Recovery'
 import Nuevas from '../Nuevas/Nuevas'
 import Aceptadas  from '../Aceptadas/Aceptadas'
 import Historial from '../Historial/Historial'
-
+import OrderDetail from '../Aceptadas/OrderDetail';
 
 export const TabStack = createMaterialTopTabNavigator({
   Nuevas: {
@@ -87,6 +87,24 @@ export const OrdenesStack = createStackNavigator({
       >
         <View style={{ paddingHorizontal: 20, paddingVertical:10 }}>
           <Ionicons name= 'ios-notifications-outline' size={28} color="#000" />
+        </View>
+      </TouchableOpacity>,
+      headerStyle:{
+        elevation:0,
+        backgroundColor:'white',
+        borderBottomColor:'transparent'
+      }
+    })
+  },
+  Detail: {
+    screen: OrderDetail,
+    navigationOptions: () => ({
+      headerRight: 
+      <TouchableOpacity
+        onPress={() => {}}
+      >
+        <View style={{ paddingHorizontal: 20, paddingVertical:10 }}>
+          <MaterialIcons name= 'directions' size={28} color="#000" />
         </View>
       </TouchableOpacity>,
       headerStyle:{

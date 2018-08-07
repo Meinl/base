@@ -37,22 +37,24 @@ class OrderItem extends React.Component {
   render() {
     const { info, service_id, status } = this.props
     return (
-      <View style={styles.careers}>
-        <View style={{paddingTop:15, paddingHorizontal:15, flexDirection:'row', justifyContent:'space-between'}}>
-          <Text style={{fontSize:12, color:'#3b3d3d', fontFamily:'roboto'}}>ID orden: {service_id}</Text>
-          {this._setOrderStatus(status.event_code)}
-        </View>
-        <View style={{paddingVertical:10, paddingHorizontal:15, flexDirection:'row', flex:1, alignItems:'center'}}>
-          <View style={{width:10, justifyContent:'center'}}>
-            <View style={{backgroundColor:'#148B97', height:10, width:10, borderRadius:5, alignSelf:'center', position:'relative'}}></View>
-            <View style={{backgroundColor:'transparent', height:16, width:16, borderRadius:8, borderWidth:1,borderColor:'#148B97', alignSelf:'center', position:'absolute'}}></View>
+      <TouchableOpacity onPress={() => this.props.navigation.navigate('Detail', this.props)}>
+        <View style={styles.careers}>
+          <View style={{paddingTop:15, paddingHorizontal:15, flexDirection:'row', justifyContent:'space-between'}}>
+            <Text style={{fontSize:12, color:'#3b3d3d', fontFamily:'roboto'}}>ID orden: {service_id}</Text>
+            {this._setOrderStatus(status.event_code)}
           </View>
-          <View style={{paddingLeft:15}}>
-            <Text style={{fontSize:16, fontFamily:'roboto', color:'#3B3D3D'}}>{info.origin.name}</Text>
-            <Text style={{fontSize:16, fontFamily:'roboto-bold', color:'#3B3D3D'}}>{info.datetime.time} hrs</Text>
+          <View style={{paddingVertical:10, paddingHorizontal:15, flexDirection:'row', flex:1, alignItems:'center'}}>
+            <View style={{width:10, justifyContent:'center'}}>
+              <View style={{backgroundColor:'#148B97', height:10, width:10, borderRadius:5, alignSelf:'center', position:'relative'}}></View>
+              <View style={{backgroundColor:'transparent', height:16, width:16, borderRadius:8, borderWidth:1,borderColor:'#148B97', alignSelf:'center', position:'absolute'}}></View>
+            </View>
+            <View style={{paddingLeft:15}}>
+              <Text style={{fontSize:16, fontFamily:'roboto', color:'#3B3D3D'}}>{info.origin.name}</Text>
+              <Text style={{fontSize:16, fontFamily:'roboto-bold', color:'#3B3D3D'}}>{info.datetime.time} hrs</Text>
+            </View>
           </View>
         </View>
-      </View>
+      </TouchableOpacity>
     )
   }
 }
