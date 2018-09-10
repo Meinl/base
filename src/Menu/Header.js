@@ -22,7 +22,7 @@ class Header extends React.Component {
       <View>
         <View style={{justifyContent:'center', alignItems:'flex-start', height:height/3}}>
           <View style={{flexDirection:'row', justifyContent:'space-between' , flex:1, alignItems:'flex-end'}}>
-            <Text style={styles.iniciales}>DC</Text>
+            <Text style={styles.iniciales}>{user.first_name.charAt(0)}{user.last_name.charAt(0)}</Text>
             <TouchableOpacity style={{alignSelf:'flex-start', paddingTop:10}}
               onPress={() => this.props.navigation.dispatch(DrawerActions.toggleDrawer())}
             >

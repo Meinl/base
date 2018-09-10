@@ -51,18 +51,24 @@ const styles = StyleSheet.create({
 })
 
 function mapStateToProps(state) {
-  const orders = Object.keys(state.orders.list).filter(item => state.orders.list[item].status.event_code !== 'WAT').map((item) => state.orders.list[item])
-  const group_to_values = orders.reduce(function (obj, item) {
-    obj[item.info.datetime] = obj[item.info.datetime] || []
-    obj[item.info.datetime].push(item)
-    return obj
-  }, {})
+  if(state.orders.list !== null) {
+    const orders = Object.keys(state.orders.list).filter(item => state.orders.list[item].status.event_code !== 'WAT').map((item) => state.orders.list[item])
+    const group_to_values = orders.reduce(function (obj, item) {
+      obj[item.info.datetime] = obj[item.info.datetime] || []
+      obj[item.info.datetime].push(item)
+      return obj
+    }, {})
 
-  const groups = Object.keys(group_to_values).map(function (key) {
-      return {title: getDateMD(key), data: group_to_values[key]}
-  })
+    const groups = Object.keys(group_to_values).map(function (key) {
+        return {title: getDateMD(key), data: group_to_values[key]}
+    })
+    return {
+      accepted: groups
+    }
+  }
+  else
   return {
-    accepted: groups
+    accepted: []
   }
 }
 

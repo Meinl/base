@@ -70,7 +70,7 @@ class DrawerComponent extends React.Component {
       alert(this.state.errorMessage)
     }
     this.location = await Location.watchPositionAsync({
-      enableHighAccuracy: true, distanceInterval: 0, timeInterval: 0
+      enableHighAccuracy: true, distanceInterval: 30, timeInterval: 500
     }, this._getLocation)
   }
 
